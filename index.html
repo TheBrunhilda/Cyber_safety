@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Дело №1042: Утечка проекта «Афина»</title>
+    <title>Школьный детектив: Взлом Блога</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #12151e;
-            --bg-desk: #1a1e29;
-            --paper-bg: #f4efe6;
-            --paper-dark: #e8e1d5;
-            --text-dark: #22252a;
-            --text-light: #e0e6ed;
-            --accent-gold: #c9a050;
-            --accent-red: #a83232;
-            --accent-green: #2d8a54;
-            --accent-blue: #2a6f97;
-            --border-color: #343b4d;
-            --shadow: 0 10px 25px rgba(0,0,0,0.5);
-            --font-title: 'Merriweather', serif;
-            --font-body: 'Montserrat', sans-serif;
-            --font-code: 'Fira Code', monospace;
+            --bg-main: #1e1e2e;
+            --bg-card: #2b2b3d;
+            --paper: #fefae0;
+            --text-dark: #2b2b2b;
+            --text-light: #f8f9fa;
+            --accent-yellow: #f4d35e;
+            --accent-orange: #ee964b;
+            --accent-red: #e63946;
+            --accent-green: #2a9d8f;
+            --font-main: 'Montserrat', sans-serif;
         }
 
         * {
@@ -34,88 +29,73 @@
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-main);
             color: var(--text-light);
-            font-family: var(--font-body);
-            line-height: 1.5;
+            font-family: var(--font-main);
+            line-height: 1.4;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header Navigation */
         header {
-            background-color: #0c0e14;
-            border-bottom: 2px solid var(--accent-gold);
-            padding: 10px 15px;
+            background: #141421;
+            border-bottom: 3px solid var(--accent-yellow);
+            padding: 12px 15px;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .logo {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--accent-yellow);
+            text-transform: uppercase;
         }
 
-        .case-title {
-            font-family: var(--font-title);
-            font-size: 0.95rem;
-            color: var(--accent-gold);
-            letter-spacing: 0.5px;
+        .badge-progress {
+            background: rgba(244, 211, 94, 0.2);
+            border: 1px solid var(--accent-yellow);
+            color: var(--accent-yellow);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
             font-weight: 700;
         }
 
-        .nav-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            gap: 10px;
-        }
-
-        .status-badge {
-            background: rgba(201, 160, 80, 0.15);
-            border: 1px solid var(--accent-gold);
-            padding: 4px 8px;
-            border-radius: 4px;
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-
         .btn {
-            background: var(--accent-gold);
+            background: var(--accent-yellow);
             color: #000;
             border: none;
-            padding: 10px 16px;
-            font-weight: 600;
-            font-family: var(--font-body);
+            padding: 12px 18px;
+            font-weight: 700;
+            font-family: var(--font-main);
+            border-radius: 8px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
             text-transform: uppercase;
             font-size: 0.85rem;
-            letter-spacing: 0.5px;
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            min-height: 42px;
+            width: 100%;
+            transition: transform 0.1s;
         }
 
         .btn:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
-        .btn-outline {
+        .btn-restart {
             background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-light);
-            min-height: auto;
+            border: 1px solid #555;
+            color: #aaa;
             padding: 5px 10px;
+            font-size: 0.75rem;
+            width: auto;
         }
 
         .btn-danger {
@@ -123,1094 +103,570 @@
             color: #fff;
         }
 
-        /* Main Workspace */
         main {
             flex: 1;
+            padding: 15px;
             display: flex;
-            position: relative;
+            flex-direction: column;
         }
 
-        /* Screens */
         .screen {
             display: none;
-            width: 100%;
-            padding: 15px;
         }
 
         .screen.active {
             display: block;
         }
 
-        /* Screen 1: Briefing */
-        .briefing-container {
-            max-width: 850px;
-            margin: 0 auto;
-            background: var(--paper-bg);
+        .briefing-box {
+            background: var(--paper);
             color: var(--text-dark);
-            padding: 20px 15px;
-            border-radius: 4px;
-            box-shadow: var(--shadow);
-            position: relative;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
-        .stamp {
-            display: inline-block;
-            border: 2px dashed var(--accent-red);
+        .briefing-box h1 {
+            font-size: 1.4rem;
             color: var(--accent-red);
-            font-weight: 700;
-            padding: 3px 8px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             margin-bottom: 10px;
+            text-align: center;
         }
 
-        .briefing-header h1 {
-            font-family: var(--font-title);
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-            line-height: 1.2;
-        }
-
-        .briefing-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 0.85rem;
-            margin: 15px 0;
-            background: rgba(0,0,0,0.05);
-            padding: 10px;
-            border-radius: 4px;
-        }
-
-        .briefing-body p {
-            margin-bottom: 12px;
+        .briefing-box p {
             font-size: 0.95rem;
-            text-align: left;
+            margin-bottom: 12px;
         }
 
-        /* Screen 2: Board / Hub */
-        .hub-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .sidebar-nav {
-            background: #181c27;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 8px;
+        .nav-tabs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
+            margin-bottom: 15px;
         }
 
-        .nav-item {
-            background: #202534;
-            border: 1px solid var(--border-color);
-            padding: 10px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            text-align: center;
+        .tab-btn {
+            background: var(--bg-card);
+            border: 2px solid #3d3d5c;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
         }
 
-        .nav-item.active {
-            border-color: var(--accent-gold);
-            background: #282e40;
-            color: var(--accent-gold);
-        }
-
-        .nav-item .badge {
-            background: rgba(255,255,255,0.15);
-            padding: 1px 6px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-        }
-
-        .hub-content {
-            background: var(--bg-desk);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 15px;
-            min-height: 400px;
-        }
-
-        /* Suspect Cards & Dossier */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
+        .tab-btn.active {
+            border-color: var(--accent-yellow);
+            background: #3d3d5c;
+            color: var(--accent-yellow);
         }
 
         .suspect-card {
-            background: var(--paper-bg);
-            color: var(--text-dark);
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
             display: flex;
-            gap: 12px;
             align-items: center;
+            gap: 12px;
+            border: 1px solid #3d3d5c;
         }
 
-        .suspect-avatar {
-            width: 70px;
-            height: 70px;
-            min-width: 70px;
-            background: #ccc;
-            border-radius: 4px;
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-orange);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #aaa;
-        }
-
-        .suspect-avatar svg {
-            width: 45px;
-            height: 45px;
-            fill: #555;
-        }
-
-        .suspect-info {
-            flex: 1;
-        }
-
-        .suspect-name {
-            font-family: var(--font-title);
+            font-size: 1.5rem;
             font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .suspect-info h3 {
             font-size: 1rem;
+            color: var(--accent-yellow);
         }
 
-        .suspect-role {
+        .suspect-info p {
             font-size: 0.8rem;
-            color: #555;
-            margin-bottom: 6px;
+            color: #ccc;
         }
 
-        .suspect-status {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 3px 6px;
-            background: #ddd;
-            display: inline-block;
-            border-radius: 3px;
-        }
-
-        .status-alibi-fail { background: #f8d7da; color: #721c24; }
-
-        /* Evidence Items */
-        .evidence-card {
-            background: #202534;
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .evidence-info h4 {
-            color: var(--accent-gold);
-            margin-bottom: 4px;
-            font-size: 0.95rem;
-        }
-
-        .evidence-info p {
-            font-size: 0.85rem;
-            color: #aaa;
-        }
-
-        /* Tasks & Inputs */
-        .task-title {
-            font-family: var(--font-title);
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #111;
-            border-bottom: 2px solid var(--accent-gold);
-            padding-bottom: 5px;
-        }
-
-        .task-desc {
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-        }
-
-        .code-snippet {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            font-family: var(--font-code);
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            overflow-x: auto;
-            margin-bottom: 12px;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-
-        .options-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .option-lbl {
-            background: #e8e2d5;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            border: 1px solid #ccc;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            line-height: 1.3;
-        }
-
-        .option-lbl input {
-            margin-top: 2px;
-            min-width: 18px;
-            min-height: 18px;
-        }
-
-        .text-input {
-            width: 100%;
-            padding: 12px;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 12px;
-        }
-
-        .feedback-msg {
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 12px;
-            font-size: 0.85rem;
-            display: none;
-        }
-
-        .feedback-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .feedback-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        /* Verdict Form */
-        .verdict-form {
-            background: var(--paper-bg);
-            color: var(--text-dark);
+        .task-card {
+            background: var(--bg-card);
+            border-radius: 10px;
             padding: 15px;
-            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--accent-yellow);
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 700;
+        .task-card h4 {
+            font-size: 0.95rem;
             margin-bottom: 6px;
-            font-size: 0.85rem;
+            color: #fff;
         }
 
-        .select-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 0.85rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: #fff;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .checkbox-lbl {
-            background: #e8e2d5;
-            padding: 10px;
+        .task-card p {
             font-size: 0.8rem;
-            border-radius: 4px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .checkbox-lbl input {
-            margin-top: 1px;
-            min-width: 16px;
-            min-height: 16px;
-        }
-
-        /* Case Board View */
-        .board-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .board-column {
-            background: #181c27;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 12px;
-        }
-
-        .board-column h3 {
-            font-family: var(--font-title);
-            color: var(--accent-gold);
-            font-size: 0.9rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
+            color: #aaa;
             margin-bottom: 10px;
         }
 
-        .board-item {
-            background: #222736;
-            padding: 8px 10px;
-            border-radius: 3px;
-            margin-bottom: 8px;
-            border-left: 3px solid var(--accent-gold);
-            font-size: 0.80rem;
-        }
-
-        /* Final Reconstruction Screen */
-        .final-screen {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--paper-bg);
-            color: var(--text-dark);
-            padding: 20px 15px;
-            border-radius: 6px;
-            box-shadow: var(--shadow);
-        }
-
-        .final-screen h1 {
-            font-family: var(--font-title);
-            color: var(--accent-green);
-            margin-bottom: 10px;
-            font-size: 1.4rem;
-            text-align: center;
-        }
-
-        .timeline-step {
-            border-left: 2px solid var(--accent-blue);
-            padding-left: 12px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .timeline-step::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent-blue);
-            position: absolute;
-            left: -5px;
-            top: 4px;
-            border-radius: 50%;
-        }
-
-        .timeline-step h4 {
-            font-size: 0.9rem;
-            color: #111;
-        }
-
-        .timeline-step p {
-            font-size: 0.8rem;
-            color: #444;
-        }
-
-        /* Modal Overlay */
-        .modal-overlay {
+        .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.85);
             z-index: 1000;
+            padding: 15px;
+            align-items: center;
             justify-content: center;
-            align-items: flex-end;
-            padding: 0;
         }
 
-        .modal-overlay.active {
+        .modal.active {
             display: flex;
         }
 
-        .modal-content {
-            background: var(--paper-bg);
+        .modal-body {
+            background: var(--paper);
             color: var(--text-dark);
+            padding: 20px;
+            border-radius: 12px;
             width: 100%;
+            max-width: 500px;
             max-height: 85vh;
             overflow-y: auto;
-            padding: 20px 15px;
-            border-radius: 12px 12px 0 0;
             position: relative;
         }
 
-        .modal-close {
+        .close-btn {
             position: absolute;
-            top: 10px; right: 12px;
-            background: #ddd;
+            top: 10px; right: 15px;
+            font-size: 1.5rem;
             border: none;
-            font-size: 1.2rem;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: none;
             cursor: pointer;
-            color: #333;
+            color: #555;
         }
 
-        /* Tablet & Desktop Tweaks */
-        @media (min-width: 768px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 15px 25px;
-            }
-            .case-title { font-size: 1.1rem; }
-            .screen { padding: 30px; }
-            .hub-grid { grid-template-columns: 240px 1fr; }
-            .sidebar-nav { display: flex; flex-direction: column; }
-            .nav-item { flex-direction: row; justify-content: space-between; text-align: left; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-            .evidence-card { flex-direction: row; justify-content: space-between; align-items: center; }
-            .modal-overlay { align-items: center; padding: 20px; }
-            .modal-content { border-radius: 6px; max-width: 650px; }
-            .board-container { grid-template-columns: repeat(3, 1fr); display: grid; }
-            .checkbox-group { grid-template-columns: 1fr 1fr; display: grid; }
+        .quiz-option {
+            background: #e9ecef;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        .quiz-option input {
+            min-width: 18px;
+            min-height: 18px;
+        }
+
+        .feedback {
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .feedback-ok { background: #d4edda; color: #155724; }
+        .feedback-err { background: #f8d7da; color: #721c24; }
+
+        .input-text {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .board-box {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #3d3d5c;
+        }
+
+        .board-box h4 {
+            color: var(--accent-yellow);
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .board-item {
+            font-size: 0.8rem;
+            color: #ddd;
+            background: rgba(255,255,255,0.05);
+            padding: 6px 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+
+        .select-box {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-lbl {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            background: #e9ecef;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        @media (min-width: 600px) {
+            main { max-width: 600px; margin: 0 auto; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-top">
-            <div class="case-title">ДЕДУКЦИЯ // ДЕЛО №1042</div>
-            <button class="btn btn-outline" id="btn-restart" onclick="restartGame()">СБРОС</button>
-        </div>
-        <div class="nav-status">
-            <span>ПРОГРЕСС: <strong id="progress-val">0%</strong></span>
-            <span class="status-badge" id="evidence-count">УЛИКИ: 0/6</span>
-        </div>
+        <div class="logo">🔍 ДЕТЕКТИВ: ВЗЛОМ БЛОГА</div>
+        <div class="badge-progress" id="progress-val">УЛИКИ: 0/4</div>
+        <button class="btn btn-restart" onclick="restartGame()">СБРОС</button>
     </header>
 
     <main>
-        <!-- SCREEN 1: BRIEFING -->
+        <!-- ЭКРАН 1: ЗАВЯЗКА -->
         <div id="screen-briefing" class="screen active">
-            <div class="briefing-container">
-                <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-                <div class="briefing-header">
-                    <h1>ПРОТОКОЛ ИНЦИДЕНТА №1042</h1>
-                    <p style="font-size: 0.8rem; color: #555;">Отдел Кибербезопасности</p>
-                </div>
-                <div class="briefing-meta">
-                    <div><strong>ОБЪЕКТ:</strong> Утечка кода AI «Афина»</div>
-                    <div><strong>ВРЕМЯ:</strong> Вчера, 23:40</div>
-                    <div><strong>ВЕКТОР:</strong> Доступ к Git-серверу</div>
-                </div>
-                <div class="briefing-body">
-                    <p>Вчера в 23:40 произошла несанкционированная выгрузка исходных файлов проекта «Афина». Вход выполнен под учетной записью одного из сотрудников.</p>
-                    <p>Подозреваемые отрицают вину. Вам предстоит изучить логи, проверить показания 4 сотрудников, проанализировать фишинговые письма и восстановить хронологию.</p>
-                </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn" style="width: 100%; max-width: 300px;" onclick="goToScreen('screen-hub')">НАЧАТЬ РАССЛЕДОВАНИЕ</button>
-                </div>
+            <div class="briefing-box">
+                <h1>🚨 ПРОИСШЕСТВИЕ!</h1>
+                <p>Кто-то вошел в аккаунт главного редактора школьного блога <strong>Максима</strong> и удалил важную статью про школьную выставку!</p>
+                <p>Максим уверяет, что никому не давал свой пароль. Под подозрением 4 участника кружка журналистики.</p>
+                <p>Твоя задача — изучить улики, проверить правила онлайн-безопасности и узнать, кто же совершил взлом!</p>
+                <button class="btn" style="margin-top: 10px;" onclick="goToScreen('screen-hub')">НАЧАТЬ РАССЛЕДОВАНИЕ</button>
             </div>
         </div>
 
-        <!-- SCREEN 2: MAIN HUB -->
+        <!-- ЭКРАН 2: РАБОЧИЙ ХАБ -->
         <div id="screen-hub" class="screen">
-            <div class="hub-grid">
-                <div class="sidebar-nav">
-                    <div class="nav-item active" onclick="switchTab('suspects')" id="nav-suspects">
-                        <span>👥 Подозреваемые</span>
-                        <span class="badge">4</span>
-                    </div>
-                    <div class="nav-item" onclick="switchTab('evidence')" id="nav-evidence">
-                        <span>🔍 Улики и Логи</span>
-                        <span class="badge" id="tab-ev-badge">0/6</span>
-                    </div>
-                    <div class="nav-item" onclick="switchTab('board')" id="nav-board">
-                        <span>📌 Доска дела</span>
-                    </div>
-                    <div class="nav-item" onclick="switchTab('verdict')" id="nav-verdict" style="border-color: var(--accent-gold);">
-                        <span>⚖️ Итоговый отчет</span>
+            <div class="nav-tabs">
+                <div class="tab-btn active" onclick="switchTab('suspects')" id="tab-btn-suspects">👥 Подозреваемые</div>
+                <div class="tab-btn" onclick="switchTab('tasks')" id="tab-btn-tasks">🔍 Улики</div>
+                <div class="tab-btn" onclick="switchTab('board')" id="tab-btn-board">📋 Доска</div>
+                <div class="tab-btn" onclick="switchTab('verdict')" id="tab-btn-verdict">⚖️ Итог</div>
+            </div>
+
+            <!-- Вкладка: Подозреваемые -->
+            <div id="tab-suspects" class="tab-content">
+                <div class="suspect-card" onclick="showSuspect('1')">
+                    <div class="avatar">А</div>
+                    <div class="suspect-info">
+                        <h3>Артём</h3>
+                        <p>Любит простые пароли. Утверждает, что не знает пароль Максима.</p>
                     </div>
                 </div>
-
-                <div class="hub-content">
-                    <!-- TAB 1: SUSPECTS -->
-                    <div id="tab-suspects" class="tab-content">
-                        <h3 style="font-family: var(--font-title); margin-bottom: 12px; color: var(--accent-gold); font-size: 1.1rem;">Сотрудники с доступом</h3>
-                        <div class="cards-grid">
-                            <div class="suspect-card" onclick="openSuspectModal('s1')">
-                                <div class="suspect-avatar">
-                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                </div>
-                                <div class="suspect-info">
-                                    <div class="suspect-name">Алексей Громов</div>
-                                    <div class="suspect-role">AI-архитектор</div>
-                                    <div class="suspect-status" id="st-s1">Был дома</div>
-                                </div>
-                            </div>
-                            <div class="suspect-card" onclick="openSuspectModal('s2')">
-                                <div class="suspect-avatar">
-                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                </div>
-                                <div class="suspect-info">
-                                    <div class="suspect-name">Елена Миронова</div>
-                                    <div class="suspect-role">Frontend-разработчик</div>
-                                    <div class="suspect-status" id="st-s2">Письмо от IT</div>
-                                </div>
-                            </div>
-                            <div class="suspect-card" onclick="openSuspectModal('s3')">
-                                <div class="suspect-avatar">
-                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                </div>
-                                <div class="suspect-info">
-                                    <div class="suspect-name">Дмитрий Ковалев</div>
-                                    <div class="suspect-role">DevOps-инженер</div>
-                                    <div class="suspect-status" id="st-s3">Работал удаленно</div>
-                                </div>
-                            </div>
-                            <div class="suspect-card" onclick="openSuspectModal('s4')">
-                                <div class="suspect-avatar">
-                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                </div>
-                                <div class="suspect-info">
-                                    <div class="suspect-name">Ирина Соколова</div>
-                                    <div class="suspect-role">Менеджер проекта</div>
-                                    <div class="suspect-status" id="st-s4">Отвечала на звонок</div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="suspect-card" onclick="showSuspect('2')">
+                    <div class="avatar" style="background: #2a9d8f;">В</div>
+                    <div class="suspect-info">
+                        <h3>Вика</h3>
+                        <p>Получала странное сообщение с просьбой перейти по ссылке.</p>
                     </div>
-
-                    <!-- TAB 2: EVIDENCE -->
-                    <div id="tab-evidence" class="tab-content" style="display: none;">
-                        <h3 style="font-family: var(--font-title); margin-bottom: 12px; color: var(--accent-gold); font-size: 1.1rem;">Улики и Материалы</h3>
-                        
-                        <div class="evidence-card">
-                            <div class="evidence-info">
-                                <h4>Улика #1: Почтовый архив</h4>
-                                <p>Письмо с просьбой сменить пароль.</p>
-                            </div>
-                            <button class="btn" onclick="openTaskModal('task1')">Изучить</button>
-                        </div>
-
-                        <div class="evidence-card">
-                            <div class="evidence-info">
-                                <h4>Улика #2: Сетевые логи Git</h4>
-                                <p>Записи входа при скачивании репозитория.</p>
-                            </div>
-                            <button class="btn" onclick="openTaskModal('task2')">Изучить</button>
-                        </div>
-
-                        <div class="evidence-card">
-                            <div class="evidence-info">
-                                <h4>Улика #3: Перехват 2FA</h4>
-                                <p>Запросы кодов 2FA на телефон Ковалева.</p>
-                            </div>
-                            <button class="btn" onclick="openTaskModal('task3')">Изучить</button>
-                        </div>
-
-                        <div class="evidence-card">
-                            <div class="evidence-info">
-                                <h4>Улика #4: Скрипт "update_check.py"</h4>
-                                <p>Файл на ПК Алексея Громова.</p>
-                            </div>
-                            <button class="btn" onclick="openTaskModal('task4')">Изучить</button>
-                        </div>
-
-                        <div class="evidence-card">
-                            <div class="evidence-info">
-                                <h4>Улика #5: Цифровой след</h4>
-                                <p>Данные из социальных сетей сотрудников.</p>
-                            </div>
-                            <button class="btn" onclick="openTaskModal('task5')">Изучить</button>
-                        </div>
-
-                        <div class="evidence-card">
-                            <div class="evidence-info">
-                                <h4>Улика #6: Архив «athena_vault.key»</h4>
-                                <p>Конфиг-файл в корпоративном облаке.</p>
-                            </div>
-                            <button class="btn" onclick="openTaskModal('task6')">Изучить</button>
-                        </div>
+                </div>
+                <div class="suspect-card" onclick="showSuspect('3')">
+                    <div class="avatar" style="background: #e63946;">Д</div>
+                    <div class="suspect-info">
+                        <h3>Денис</h3>
+                        <p>Часто оставляет свои данные в открытом доступе.</p>
                     </div>
-
-                    <!-- TAB 3: BOARD -->
-                    <div id="tab-board" class="tab-content" style="display: none;">
-                        <h3 style="font-family: var(--font-title); margin-bottom: 12px; color: var(--accent-gold); font-size: 1.1rem;">Доска расследования</h3>
-                        <div class="board-container">
-                            <div class="board-column">
-                                <h3>Факты</h3>
-                                <div id="board-facts">
-                                    <div class="board-item">Утечка произошла в 23:40 через Git-аккаунт.</div>
-                                </div>
-                            </div>
-                            <div class="board-column">
-                                <h3>Алиби</h3>
-                                <div id="board-alibi">
-                                    <div class="board-item">Изучите улики для проверки версий.</div>
-                                </div>
-                            </div>
-                            <div class="board-column">
-                                <h3>Улики</h3>
-                                <div id="board-evidences">
-                                    <div class="board-item" style="color: #888;">Пока нет улик.</div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+                <div class="suspect-card" onclick="showSuspect('4')">
+                    <div class="avatar" style="background: #457b9d;">С</div>
+                    <div class="suspect-info">
+                        <h3>София</h3>
+                        <p>Сидела в школьном Wi-Fi и искала бесплатные стикеры.</p>
                     </div>
+                </div>
+            </div>
 
-                    <!-- TAB 4: VERDICT -->
-                    <div id="tab-verdict" class="tab-content" style="display: none;">
-                        <div class="verdict-form">
-                            <h3 style="font-family: var(--font-title); margin-bottom: 10px; color: var(--accent-red); text-align: center;">ИТОГОВЫЙ ОТЧЕТ</h3>
-                            
-                            <div class="form-group">
-                                <label>1. Чья учетная запись использована?</label>
-                                <select class="select-input" id="v-account">
-                                    <option value="">-- Выберите --</option>
-                                    <option value="s1">Алексей Громов</option>
-                                    <option value="s2">Елена Миронова</option>
-                                    <option value="s3">Дмитрий Ковалев</option>
-                                    <option value="s4">Ирина Соколова</option>
-                                </select>
-                            </div>
+            <!-- Вкладка: Задания / Улики -->
+            <div id="tab-tasks" class="tab-content" style="display:none;">
+                <div class="task-card">
+                    <h4>Улика #1: Записка с паролем Максима</h4>
+                    <p>Найден листочек с записями паролей. Какой из них был самым надежным?</p>
+                    <button class="btn" onclick="openTask('1')">Проверить пароли</button>
+                </div>
+                <div class="task-card">
+                    <h4>Улика #2: Сообщение в мессенджере</h4>
+                    <p>Вика получила подозрительную ссылку. Фишинг это или нет?</p>
+                    <button class="btn" onclick="openTask('2')">Проверить ссылку</button>
+                </div>
+                <div class="task-card">
+                    <h4>Улика #3: Пост в социальной сети</h4>
+                    <p>Денис выложил фото своего пропускного билета в школу.</p>
+                    <button class="btn" onclick="openTask('3')">Проверить фото</button>
+                </div>
+                <div class="task-card">
+                    <h4>Улика #4: Опрос про Wi-Fi</h4>
+                    <p>София подключилась к неизвестной сети без пароля.</p>
+                    <button class="btn" onclick="openTask('4')">Проверить сеть</button>
+                </div>
+            </div>
 
-                            <div class="form-group">
-                                <label>2. Вектор атаки (способ взлома)?</label>
-                                <select class="select-input" id="v-vector">
-                                    <option value="">-- Выберите --</option>
-                                    <option value="bruteforce">Перебор пароля (Brute Force)</option>
-                                    <option value="phishing">Фишинг + Социальная инженерия (перехват 2FA)</option>
-                                    <option value="malware">Вредоносный скрипт</option>
-                                    <option value="insider">Слив через флешку</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>3. Улики-доказательства (мин. 3):</label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev1" class="v-ev"> Поддельный URL в письме</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev2" class="v-ev"> IP из прокси-сети в логах</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev3" class="v-ev"> Передача 2FA по телефону</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev4" class="v-ev"> Безопасный скрипт Громова</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev5" class="v-ev"> Открытый номер в соцсети</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev6" class="v-ev"> Слабый пароль в облаке</label>
-                                </div>
-                            </div>
-
-                            <div class="feedback-msg" id="verdict-feedback"></div>
-
-                            <button class="btn btn-danger" style="width: 100%; margin-top: 10px;" onclick="submitVerdict()">ОТПРАВИТЬ ОТЧЕТ</button>
-                        </div>
+            <!-- Вкладка: Доска -->
+            <div id="tab-board" class="tab-content" style="display:none;">
+                <div class="board-box">
+                    <h4>Найденные факты:</h4>
+                    <div id="board-facts">
+                        <div class="board-item">Изучайте улики, чтобы собирать факты!</div>
                     </div>
+                </div>
+            </div>
 
+            <!-- Вкладка: Выдвижение версии -->
+            <div id="tab-verdict" class="tab-content" style="display:none;">
+                <div class="briefing-box">
+                    <h3 style="margin-bottom: 10px; font-size: 1.1rem; color: var(--accent-red);">Кто взломал блог?</h3>
+                    <p style="font-size: 0.85rem;">Выбери виновного и укажи, как он узнал пароль:</p>
+                    
+                    <select class="select-box" id="v-who">
+                        <option value="">-- Кто виновен? --</option>
+                        <option value="artem">Артём</option>
+                        <option value="denis">Денис</option>
+                        <option value="sofia">София</option>
+                    </select>
+
+                    <p style="font-size: 0.85rem; margin-bottom: 5px;">Какая ошибка привела к взлому?</p>
+                    <select class="select-box" id="v-reason">
+                        <option value="">-- В чем причина? --</option>
+                        <option value="easy">У Максима был слишком простой пароль (123456)</option>
+                        <option value="phishing">Максим перешел по фишинговой ссылке</option>
+                        <option value="photo">Максим выложил фото с паролем в соцсеть</option>
+                    </select>
+
+                    <button class="btn btn-danger" onclick="submitVerdict()">ОТПРАВИТЬ ОТЧЕТ</button>
+                    <div class="feedback" id="verdict-fb"></div>
                 </div>
             </div>
         </div>
 
-        <!-- SCREEN 3: FINAL RECONSTRUCTION -->
+        <!-- ЭКРАН 3: ФИНАЛ -->
         <div id="screen-final" class="screen">
-            <div class="final-screen">
-                <h1>ДЕЛО РАСКРЫТО!</h1>
-                <p style="text-align: center; margin-bottom: 20px; font-weight: 600; font-size: 0.9rem;">Анализ киберинцидента полностью подтвержден.</p>
-
-                <h3 style="font-family: var(--font-title); margin-bottom: 12px; font-size: 1rem;">РЕКОНСТРУКЦИЯ АТАКИ:</h3>
-
-                <div class="timeline-step">
-                    <h4>1. Сбор информации (OSINT)</h4>
-                    <p>Злоумышленник узнал личный номер телефона Дмитрия Ковалева из соцсетей (Улика #5).</p>
-                </div>
-
-                <div class="timeline-step">
-                    <h4>2. Фишинговая атака</h4>
-                    <p>Ковалев получил письмо от <code>vector-tech.support-security.com</code> и перешел на поддельный сайт (Улика #1).</p>
-                </div>
-
-                <div class="timeline-step">
-                    <h4>3. Обход 2FA</h4>
-                    <p>Злоумышленник позвонил под видом IT-службы и выманил одноразовый код из SMS (Улика #3).</p>
-                </div>
-
-                <div class="timeline-step">
-                    <h4>4. Выгрузка кода</h4>
-                    <p>Используя токен Ковалева, атакующий подключился к Git-серверу через прокси (Улика #2) в 23:40 и скачал проект.</p>
-                </div>
-
-                <div style="background: rgba(45, 138, 84, 0.15); border: 1px solid var(--accent-green); padding: 12px; border-radius: 4px; margin-top: 20px;">
-                    <h4 style="color: var(--accent-green); margin-bottom: 6px; font-size: 0.9rem;">🔑 ПРАВИЛА БЕЗОПАСНОСТИ:</h4>
-                    <ul style="padding-left: 15px; font-size: 0.8rem;">
-                        <li>Никогда не передавайте 2FA коды по телефону.</li>
-                        <li>Проверяйте доменное имя в ссылках.</li>
-                        <li>Следите за личной информацией в соцсетях.</li>
+            <div class="briefing-box" style="text-align: center;">
+                <h1 style="color: var(--accent-green);">🎉 ДЕЛО РАСКРЫТО!</h1>
+                <p><strong>Виновник: Артём!</strong></p>
+                <p>Артём просто подобрал пароль Максима, потому что тот использовал самый простой и популярный пароль <code>123456</code>!</p>
+                
+                <div style="background: #e9ecef; padding: 10px; border-radius: 8px; text-align: left; margin: 15px 0; font-size: 0.85rem;">
+                    <strong>💡 Правила безопасности:</strong>
+                    <ul style="padding-left: 15px; margin-top: 5px;">
+                        <li>Создавай сложные пароли (буквы, цифры, знаки).</li>
+                        <li>Не переходи по подозрительным ссылкам.</li>
+                        <li>Не выкладывай личные данные и документы в интернет.</li>
                     </ul>
                 </div>
 
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn" style="width: 100%;" onclick="restartGame()">ПРОЙТИ ЕЩЕ РАЗ</button>
-                </div>
+                <button class="btn" onclick="restartGame()">СЫГРАТЬ ЕЩЕ РАЗ</button>
             </div>
         </div>
     </main>
 
-    <!-- MODALS -->
-    <div class="modal-overlay" id="modal-suspect">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('modal-suspect')">&times;</button>
-            <h3 id="m-s-name" style="font-family: var(--font-title); color: var(--accent-gold); margin-bottom: 4px;"></h3>
-            <p id="m-s-role" style="color: #666; font-size: 0.8rem; margin-bottom: 12px;"></p>
-            <div style="background: #e8e2d5; padding: 12px; border-radius: 4px; font-size: 0.85rem;">
-                <strong>Показания:</strong>
-                <p id="m-s-desc" style="margin-top: 4px;"></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal-task">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('modal-task')">&times;</button>
-            <div id="task-container"></div>
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div class="modal" id="task-modal">
+        <div class="modal-body">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div id="modal-content"></div>
         </div>
     </div>
 
     <script>
         const gameState = {
-            progress: 0,
-            evidencesFound: { ev1: false, ev2: false, ev3: false, ev4: false, ev5: false, ev6: false },
-            suspectsChecked: { s1: false, s2: false, s3: false, s4: false },
-            verdictAttempts: 0
+            evidences: { e1: false, e2: false, e3: false, e4: false },
+            score: 0
         };
 
-        const suspectsData = {
-            s1: { name: "Алексей Громов", role: "AI-архитектор", desc: "Вчера ушел в 19:00. Ноутбук был дома. На ПК найден скрипт обновления." },
-            s2: { name: "Елена Миронова", role: "Frontend-разработчик", desc: "Получила письмо от IT-отдела о смене пароля." },
-            s3: { name: "Дмитрий Ковалев", role: "DevOps-инженер", desc: "Имеет root-доступ. В 23:30 ему звонили якобы из службы поддержки." },
-            s4: { name: "Ирина Соколова", role: "Менеджер проекта", desc: "Общалась в мессенджере с подрядчиками весь вечер." }
-        };
-
-        function goToScreen(screenId) {
+        function goToScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            window.scrollTo(0, 0);
+            document.getElementById(id).classList.add('active');
         }
 
-        function switchTab(tabName) {
+        function switchTab(name) {
             document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             
-            document.getElementById('tab-' + tabName).style.display = 'block';
-            document.getElementById('nav-' + tabName).classList.add('active');
+            document.getElementById('tab-' + name).style.display = 'block';
+            document.getElementById('tab-btn-' + name).classList.add('active');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        function closeModal() {
+            document.getElementById('task-modal').classList.remove('active');
         }
 
-        function openSuspectModal(id) {
-            const data = suspectsData[id];
-            document.getElementById('m-s-name').innerText = data.name;
-            document.getElementById('m-s-role').innerText = data.role;
-            document.getElementById('m-s-desc').innerText = data.desc;
-            
-            gameState.suspectsChecked[id] = true;
-            updateProgress();
-            document.getElementById('modal-suspect').classList.add('active');
+        function showSuspect(id) {
+            const content = document.getElementById('modal-content');
+            if (id === '1') {
+                content.innerHTML = `<h3>Артём</h3><p style="margin-top:10px;">Любит играть в игры и не хочет запоминать сложные пароли. Везде использует пароль "123456".</p>`;
+            } else if (id === '2') {
+                content.innerHTML = `<h3>Вика</h3><p style="margin-top:10px;">Очень осторожна в сети. Всегда проверяет ссылки перед тем, как нажать.</p>`;
+            } else if (id === '3') {
+                content.innerHTML = `<h3>Денис</h3><p style="margin-top:10px;">Опубликовал в сторис фото своего школьного дневника и логина.</p>`;
+            } else if (id === '4') {
+                content.innerHTML = `<h3>София</h3><p style="margin-top:10px;">Любит бесплатный интернет и подлючается к любым открытым сетям.</p>`;
+            }
+            document.getElementById('task-modal').classList.add('active');
         }
 
-        function openTaskModal(taskId) {
-            const container = document.getElementById('task-container');
-            let html = '';
-
-            if (taskId === 'task1') {
-                html = `
-                    <div class="task-title">Улика #1: Заголовок письма</div>
-                    <p class="task-desc">Изучите адрес отправителя и ссылку:</p>
-                    <div class="code-snippet">From: Security &lt;admin@vector-tech.support-security.com&gt;
-To: e.mironova@vector-tech.com
-
-Подтвердите доступ:
-http://login.vector-tech.com.auth-check.ru/login</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> Является ли письмо фишинговым?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t1" value="1"> Легитимное</label>
-                        <label class="option-lbl"><input type="radio" name="t1" value="2"> Фишинговое: реальный домен support-security.com, а ссылка ведет на auth-check.ru</label>
-                    </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask1()">Проверить</button>
-                    <div class="feedback-msg" id="fb-t1"></div>
+        function openTask(id) {
+            const content = document.getElementById('modal-content');
+            if (id === '1') {
+                content.innerHTML = `
+                    <h3>Улика #1: Пароли Максима</h3>
+                    <p style="font-size:0.85rem; margin:10px 0;">Какой пароль из списка легко взломать за 1 секунду?</p>
+                    <div class="quiz-option"><input type="radio" name="p" value="1"> Super_Max2026!</div>
+                    <div class="quiz-option"><input type="radio" name="p" value="2"> 123456</div>
+                    <div class="quiz-option"><input type="radio" name="p" value="3"> K9#mP!xLq</div>
+                    <button class="btn" onclick="checkTask1()">Ответить</button>
+                    <div class="feedback" id="fb"></div>
                 `;
-            } else if (taskId === 'task2') {
-                html = `
-                    <div class="task-title">Улика #2: Логи Git</div>
-                    <p class="task-desc">Определите IP-адрес скачивания кода (GIT CLONE):</p>
-                    <div class="code-snippet">23:10:02 user: d_kovalev IP: 192.168.1.45
-23:40:55 user: d_kovalev IP: 185.220.101.5
-23:41:10 [GIT CLONE] repo: athena.git user: d_kovalev</div>
-                    <input type="text" class="text-input" id="inp-t2" placeholder="Введите IP...">
-                    <button class="btn" style="width:100%;" onclick="checkTask2()">Анализировать</button>
-                    <div class="feedback-msg" id="fb-t2"></div>
+            } else if (id === '2') {
+                content.innerHTML = `
+                    <h3>Улика #2: Ссылка в сообщении</h3>
+                    <p style="font-size:0.85rem; margin:10px 0;">Безопасно ли переходить по этой ссылке: <code>http://free-gifts-vk.ru.com/login</code>?</p>
+                    <div class="quiz-option"><input type="radio" name="p2" value="1"> Да, это официальный сайт</div>
+                    <div class="quiz-option"><input type="radio" name="p2" value="2"> Нет, это опасный фишинговый сайт!</div>
+                    <button class="btn" onclick="checkTask2()">Ответить</button>
+                    <div class="feedback" id="fb"></div>
                 `;
-            } else if (taskId === 'task3') {
+            } else if (id === '3') {
                 html = `
-                    <div class="task-title">Улика #3: SMS и Звонок</div>
-                    <div class="code-snippet">[SMS]: Код подтверждения Git: 849-201. Никому не сообщайте!
-[Звонок]: "Дмитрий, это IT-отдел. Назовите код из SMS..."</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> В чем ошибка Дмитрия?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t3" value="1"> Не перезвонил в IT</label>
-                        <label class="option-lbl"><input type="radio" name="t3" value="2"> Сообщил одноразовый код 2FA по телефону</label>
-                    </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask3()">Подтвердить</button>
-                    <div class="feedback-msg" id="fb-t3"></div>
+                    <h3>Улика #3: Личные данные</h3>
+                    <p style="font-size:0.85rem; margin:10px 0;">Почему нельзя выкладывать в сеть фото документов и билетов?</p>
+                    <div class="quiz-option"><input type="radio" name="p3" value="1"> Мошенники могут использовать личные данные</div>
+                    <div class="quiz-option"><input type="radio" name="p3" value="2"> Это просто некрасиво</div>
+                    <button class="btn" onclick="checkTask3()">Ответить</button>
+                    <div class="feedback" id="fb"></div>
                 `;
-            } else if (taskId === 'task4') {
-                html = `
-                    <div class="task-title">Улика #4: Файл update_check.py</div>
-                    <div class="code-snippet">import os, time
-print("Checking updates...")
-time.sleep(2)
-print("Updated successfully.")</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> Опасен ли данный скрипт?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t4" value="1"> Да, это вирус</label>
-                        <label class="option-lbl"><input type="radio" name="t4" value="2"> Нет, это безопасная заглушка</label>
-                    </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask4()">Проверить</button>
-                    <div class="feedback-msg" id="fb-t4"></div>
-                `;
-            } else if (taskId === 'task5') {
-                html = `
-                    <div class="task-title">Улика #5: Соцсети</div>
-                    <div class="code-snippet">Пост Дмитрия: "Мой рабочий номер для связи: +7 (999) 123-45-67. Отвечаю DevOps-отделу 24/7!"</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> Как использовали эти данные?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t5" value="1"> Узнали его прямой номер и роль для звонка</label>
-                        <label class="option-lbl"><input type="radio" name="t5" value="2"> Взломали страницу</label>
-                    </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask5()">Сопоставить</button>
-                    <div class="feedback-msg" id="fb-t5"></div>
-                `;
-            } else if (taskId === 'task6') {
-                html = `
-                    <div class="task-title">Улика #6: Архив ключей</div>
-                    <p class="task-desc">Введите классический самый простой пароль из 8 цифр (123...):</p>
-                    <input type="text" class="text-input" id="inp-t6" placeholder="Пароль...">
-                    <button class="btn" style="width:100%;" onclick="checkTask6()">Взломать</button>
-                    <div class="feedback-msg" id="fb-t6"></div>
+                content.innerHTML = html;
+            } else if (id === '4') {
+                content.innerHTML = `
+                    <h3>Улика #4: Открытый Wi-Fi</h3>
+                    <p style="font-size:0.85rem; margin:10px 0;">Безопасно ли вводить пароли, когда ты подключен к незнакомому Wi-Fi без пароля?</p>
+                    <div class="quiz-option"><input type="radio" name="p4" value="1"> Да, абсолютно</div>
+                    <div class="quiz-option"><input type="radio" name="p4" value="2"> Нет, данные могут перехватить</div>
+                    <button class="btn" onclick="checkTask4()">Ответить</button>
+                    <div class="feedback" id="fb"></div>
                 `;
             }
-
-            container.innerHTML = html;
-            document.getElementById('modal-task').classList.add('active');
+            document.getElementById('task-modal').classList.add('active');
         }
 
         function checkTask1() {
-            const selected = document.querySelector('input[name="t1"]:checked');
-            const fb = document.getElementById('fb-t1');
-            if (selected && selected.value === '2') {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Обнаружен фишинговый домен.';
+            const sel = document.querySelector('input[name="p"]:checked');
+            const fb = document.getElementById('fb');
+            if (sel && sel.value === '2') {
+                fb.className = 'feedback feedback-ok';
+                fb.innerText = 'Правильно! Пароль 123456 — самый простой и опасный.';
                 fb.style.display = 'block';
-                addEvidence('ev1', 'Фишинговое письмо с поддельным URL');
+                addEvidence('e1', 'Пароль Максима был слишком простым (123456).');
             } else {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'ОШИБКА. Посмотрите на реальный домен после @.';
+                fb.className = 'feedback feedback-err';
+                fb.innerText = 'Неверно! Подумай, какой пароль состоит только из последовательных цифр.';
                 fb.style.display = 'block';
             }
         }
 
         function checkTask2() {
-            const val = document.getElementById('inp-t2').value.trim();
-            const fb = document.getElementById('fb-t2');
-            if (val === '185.220.101.5') {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Вход выполнен из внешней сети.';
+            const sel = document.querySelector('input[name="p2"]:checked');
+            const fb = document.getElementById('fb');
+            if (sel && sel.value === '2') {
+                fb.className = 'feedback feedback-ok';
+                fb.innerText = 'Верно! Это фишинговая ссылка.';
                 fb.style.display = 'block';
-                addEvidence('ev2', 'Лог подключения с внешнего IP 185.220.101.5');
+                addEvidence('e2', 'Вика не попадалась на фишинг.');
             } else {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. Скопируйте IP из строки GIT CLONE.';
+                fb.className = 'feedback feedback-err';
+                fb.innerText = 'Ошибка! Обрати внимание на странный адрес ссылки.';
                 fb.style.display = 'block';
             }
         }
 
         function checkTask3() {
-            const selected = document.querySelector('input[name="t3"]:checked');
-            const fb = document.getElementById('fb-t3');
-            if (selected && selected.value === '2') {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Коды 2FA нельзя передавать никому.';
+            const sel = document.querySelector('input[name="p3"]:checked');
+            const fb = document.getElementById('fb');
+            if (sel && sel.value === '1') {
+                fb.className = 'feedback feedback-ok';
+                fb.innerText = 'Верно! Нельзя публиковать фото документов.';
                 fb.style.display = 'block';
-                addEvidence('ev3', 'Передача 2FA кода по телефону');
+                addEvidence('e3', 'Денис публикует лишние данные, но пароли не знал.');
             } else {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. Что не просили делать в SMS?';
+                fb.className = 'feedback feedback-err';
+                fb.innerText = 'Неверно! Подумай об опасности мошенничества.';
                 fb.style.display = 'block';
             }
         }
 
         function checkTask4() {
-            const selected = document.querySelector('input[name="t4"]:checked');
-            const fb = document.getElementById('fb-t4');
-            if (selected && selected.value === '2') {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Скрипт безопасен. Громов чист.';
+            const sel = document.querySelector('input[name="p4"]:checked');
+            const fb = document.getElementById('fb');
+            if (sel && sel.value === '2') {
+                fb.className = 'feedback feedback-ok';
+                fb.innerText = 'Верно! Открытые сети небезопасны.';
                 fb.style.display = 'block';
-                addEvidence('ev4', 'Алексей Громов невиновен');
+                addEvidence('e4', 'София рискует в Wi-Fi, но блог не взламывала.');
             } else {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. В коде нет вредоносных функций.';
-                fb.style.display = 'block';
-            }
-        }
-
-        function checkTask5() {
-            const selected = document.querySelector('input[name="t5"]:checked');
-            const fb = document.getElementById('fb-t5');
-            if (selected && selected.value === '1') {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Публикация номера упростила атаку.';
-                fb.style.display = 'block';
-                addEvidence('ev5', 'Публичный цифровой след Ковалева');
-            } else {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. Подумайте, как это помогает при звонке.';
-                fb.style.display = 'block';
-            }
-        }
-
-        function checkTask6() {
-            const val = document.getElementById('inp-t6').value.trim();
-            const fb = document.getElementById('fb-t6');
-            if (val === '12345678') {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Пароль "12345678" легко взломан.';
-                fb.style.display = 'block';
-                addEvidence('ev6', 'Слабый пароль архива');
-            } else {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'ПОДСКАЗКА: Введите 12345678';
+                fb.className = 'feedback feedback-err';
+                fb.innerText = 'Неверно! Перехватить данные в открытой сети очень легко.';
                 fb.style.display = 'block';
             }
         }
 
         function addEvidence(id, text) {
-            if (!gameState.evidencesFound[id]) {
-                gameState.evidencesFound[id] = true;
+            if (!gameState.evidences[id]) {
+                gameState.evidences[id] = true;
+                gameState.score++;
+                document.getElementById('progress-val').innerText = `УЛИКИ: ${gameState.score}/4`;
                 
-                const boardEv = document.getElementById('board-evidences');
-                if (boardEv.children[0] && boardEv.children[0].style.color) {
-                    boardEv.innerHTML = '';
-                }
+                const board = document.getElementById('board-facts');
+                if (gameState.score === 1) board.innerHTML = '';
                 const item = document.createElement('div');
                 item.className = 'board-item';
-                item.innerText = '🔍 ' + text;
-                boardEv.appendChild(item);
-
-                if (id === 'ev3') {
-                    const boardAlibi = document.getElementById('board-alibi');
-                    const aItem = document.createElement('div');
-                    aItem.className = 'board-item';
-                    aItem.style.borderLeftColor = 'var(--accent-red)';
-                    aItem.innerText = '⚠️ Алиби Ковалева опровергнуто: передал 2FA код.';
-                    boardAlibi.appendChild(aItem);
-                    document.getElementById('st-s3').className = 'suspect-status status-alibi-fail';
-                    document.getElementById('st-s3').innerText = 'АЛИБИ ОПРОВЕРГНУТО';
-                }
-
-                updateProgress();
+                item.innerText = '✔️ ' + text;
+                board.appendChild(item);
             }
-        }
-
-        function updateProgress() {
-            let foundCount = 0;
-            for (let k in gameState.evidencesFound) {
-                if (gameState.evidencesFound[k]) foundCount++;
-            }
-            
-            document.getElementById('evidence-count').innerText = `УЛИКИ: ${foundCount}/6`;
-            document.getElementById('tab-ev-badge').innerText = `${foundCount}/6`;
-
-            let suspectCount = 0;
-            for (let k in gameState.suspectsChecked) {
-                if (gameState.suspectsChecked[k]) suspectCount++;
-            }
-
-            const totalScore = (foundCount * 12) + (suspectCount * 7);
-            gameState.progress = Math.min(100, totalScore);
-            document.getElementById('progress-val').innerText = `${gameState.progress}%`;
         }
 
         function submitVerdict() {
-            const account = document.getElementById('v-account').value;
-            const vector = document.getElementById('v-vector').value;
-            const selectedEv = Array.from(document.querySelectorAll('.v-ev:checked')).map(cb => cb.value);
-            const fb = document.getElementById('verdict-feedback');
+            const who = document.getElementById('v-who').value;
+            const reason = document.getElementById('v-reason').value;
+            const fb = document.getElementById('verdict-fb');
 
-            if (!account || !vector || selectedEv.length < 3) {
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'ОШИБКА: Заполните все поля и выберите минимум 3 улики!';
-                fb.style.display = 'block';
-                return;
-            }
-
-            if (account === 's3' && vector === 'phishing' && selectedEv.includes('ev1') && selectedEv.includes('ev2') && selectedEv.includes('ev3')) {
-                fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ОТЧЕТ ПРИНЯТ! Ваша версия подтверждена.';
-                fb.style.display = 'block';
-                setTimeout(() => {
-                    goToScreen('screen-final');
-                }, 1200);
+            if (who === 'artem' && reason === 'easy') {
+                goToScreen('screen-final');
             } else {
-                gameState.verdictAttempts++;
-                fb.className = 'feedback-msg feedback-error';
-                fb.innerText = `ЕСТЬ ПРОТИВОРЕЧИЕ. Проверьте логи еще раз. (Попытка №${gameState.verdictAttempts})`;
+                fb.className = 'feedback feedback-err';
+                fb.innerText = 'Неверно! Подумай еще раз: у кого из ребят был самый простой пароль?';
                 fb.style.display = 'block';
             }
         }
 
         function restartGame() {
-            gameState.progress = 0;
-            for (let k in gameState.evidencesFound) gameState.evidencesFound[k] = false;
-            for (let k in gameState.suspectsChecked) gameState.suspectsChecked[k] = false;
-            gameState.verdictAttempts = 0;
-
-            document.getElementById('board-evidences').innerHTML = '<div class="board-item" style="color: #888;">Пока нет улик.</div>';
-            document.getElementById('board-alibi').innerHTML = '<div class="board-item">Изучите улики для проверки версий.</div>';
-            
-            document.getElementById('st-s3').className = 'suspect-status';
-            document.getElementById('st-s3').innerText = 'Работал удаленно';
-
-            updateProgress();
+            gameState.score = 0;
+            for (let k in gameState.evidences) gameState.evidences[k] = false;
+            document.getElementById('progress-val').innerText = 'УЛИКИ: 0/4';
+            document.getElementById('board-facts').innerHTML = '<div class="board-item">Изучайте улики, чтобы собирать факты!</div>';
             goToScreen('screen-briefing');
         }
     </script>
