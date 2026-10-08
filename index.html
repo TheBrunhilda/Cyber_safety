@@ -6,7 +6,7 @@
     <title>Дело №1042: Утечка проекта «Афина»</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #12151e;
@@ -23,7 +23,6 @@
             --shadow: 0 10px 25px rgba(0,0,0,0.5);
             --font-title: 'Merriweather', serif;
             --font-body: 'Montserrat', sans-serif;
-            --font-code: 'Fira Code', monospace;
         }
 
         * {
@@ -331,32 +330,24 @@
             color: #aaa;
         }
 
-        /* Tasks & Inputs */
-        .task-title {
-            font-family: var(--font-title);
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #111;
-            border-bottom: 2px solid var(--accent-gold);
-            padding-bottom: 5px;
-        }
-
-        .task-desc {
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-        }
-
-        .code-snippet {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            font-family: var(--font-code);
+        /* Readable Document Box (replaces raw code) */
+        .doc-box {
+            background: #ffffff;
+            color: #111111;
             padding: 12px;
             border-radius: 4px;
-            font-size: 0.75rem;
-            overflow-x: auto;
+            font-size: 0.85rem;
+            border: 1px solid #ccc;
             margin-bottom: 12px;
-            white-space: pre-wrap;
-            word-break: break-all;
+            line-height: 1.4;
+        }
+
+        .doc-header {
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            color: var(--accent-blue);
         }
 
         .options-group {
@@ -387,7 +378,6 @@
         .text-input {
             width: 100%;
             padding: 12px;
-            font-family: var(--font-code);
             font-size: 0.9rem;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -630,13 +620,13 @@
                     <p style="font-size: 0.8rem; color: #555;">Отдел Кибербезопасности</p>
                 </div>
                 <div class="briefing-meta">
-                    <div><strong>ОБЪЕКТ:</strong> Утечка кода AI «Афина»</div>
+                    <div><strong>ОБЪЕКТ:</strong> Утечка секретного проекта «Афина»</div>
                     <div><strong>ВРЕМЯ:</strong> Вчера, 23:40</div>
-                    <div><strong>ВЕКТОР:</strong> Доступ к Git-серверу</div>
+                    <div><strong>СУТЬ:</strong> Взлом через аккаунт сотрудника</div>
                 </div>
                 <div class="briefing-body">
-                    <p>Вчера в 23:40 произошла несанкционированная выгрузка исходных файлов проекта «Афина». Вход выполнен под учетной записью одного из сотрудников.</p>
-                    <p>Подозреваемые отрицают вину. Вам предстоит изучить логи, проверить показания 4 сотрудников, проанализировать фишинговые письма и восстановить хронологию.</p>
+                    <p>Вчера в 23:40 произошел несанкционированный доступ к секретным файлам компании. Доступ был получен под учетной записью одного из ключевых сотрудников.</p>
+                    <p>Ни один из сотрудников не признает вины. Вам предстоит изучить выписки из журнала входов, электронную почту, текстовые переписки и файлы, чтобы понять, как мошенники смогли обойти защиту, чей аккаунт взломали и кто стоит за утечкой.</p>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
                     <button class="btn" style="width: 100%; max-width: 300px;" onclick="goToScreen('screen-hub')">НАЧАТЬ РАССЛЕДОВАНИЕ</button>
@@ -653,11 +643,11 @@
                         <span class="badge">4</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('evidence')" id="nav-evidence">
-                        <span>🔍 Улики и Логи</span>
+                        <span>🔍 Улики и Материалы</span>
                         <span class="badge" id="tab-ev-badge">0/6</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('board')" id="nav-board">
-                        <span>📌 Доска дела</span>
+                        <span>📌 Доска расследования</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('verdict')" id="nav-verdict" style="border-color: var(--accent-gold);">
                         <span>⚖️ Итоговый отчет</span>
@@ -675,7 +665,7 @@
                                 </div>
                                 <div class="suspect-info">
                                     <div class="suspect-name">Алексей Громов</div>
-                                    <div class="suspect-role">AI-архитектор</div>
+                                    <div class="suspect-role">Главный архитектор</div>
                                     <div class="suspect-status" id="st-s1">Был дома</div>
                                 </div>
                             </div>
@@ -685,8 +675,8 @@
                                 </div>
                                 <div class="suspect-info">
                                     <div class="suspect-name">Елена Миронова</div>
-                                    <div class="suspect-role">Frontend-разработчик</div>
-                                    <div class="suspect-status" id="st-s2">Письмо от IT</div>
+                                    <div class="suspect-role">Веб-разработчик</div>
+                                    <div class="suspect-status" id="st-s2">Получила письмо</div>
                                 </div>
                             </div>
                             <div class="suspect-card" onclick="openSuspectModal('s3')">
@@ -695,7 +685,7 @@
                                 </div>
                                 <div class="suspect-info">
                                     <div class="suspect-name">Дмитрий Ковалев</div>
-                                    <div class="suspect-role">DevOps-инженер</div>
+                                    <div class="suspect-role">Администратор сетей</div>
                                     <div class="suspect-status" id="st-s3">Работал удаленно</div>
                                 </div>
                             </div>
@@ -706,7 +696,7 @@
                                 <div class="suspect-info">
                                     <div class="suspect-name">Ирина Соколова</div>
                                     <div class="suspect-role">Менеджер проекта</div>
-                                    <div class="suspect-status" id="st-s4">Отвечала на звонок</div>
+                                    <div class="suspect-status" id="st-s4">Созванивалась с коллегами</div>
                                 </div>
                             </div>
                         </div>
@@ -718,48 +708,48 @@
                         
                         <div class="evidence-card">
                             <div class="evidence-info">
-                                <h4>Улика #1: Почтовый архив</h4>
-                                <p>Письмо с просьбой сменить пароль.</p>
+                                <h4>Улика #1: Подозрительное письмо Елены</h4>
+                                <p>Запрос на срочное подтверждение учетной записи.</p>
                             </div>
                             <button class="btn" onclick="openTaskModal('task1')">Изучить</button>
                         </div>
 
                         <div class="evidence-card">
                             <div class="evidence-info">
-                                <h4>Улика #2: Сетевые логи Git</h4>
-                                <p>Записи входа при скачивании репозитория.</p>
+                                <h4>Улика #2: Отчет о входах в систему</h4>
+                                <p>Журнал подключений к файловому серверу вчера вечером.</p>
                             </div>
                             <button class="btn" onclick="openTaskModal('task2')">Изучить</button>
                         </div>
 
                         <div class="evidence-card">
                             <div class="evidence-info">
-                                <h4>Улика #3: Перехват 2FA</h4>
-                                <p>Запросы кодов 2FA на телефон Ковалева.</p>
+                                <h4>Улика #3: Перехват звонка и SMS</h4>
+                                <p>Распечатка сообщений и аудиозапись разговора с Дмитрием.</p>
                             </div>
                             <button class="btn" onclick="openTaskModal('task3')">Изучить</button>
                         </div>
 
                         <div class="evidence-card">
                             <div class="evidence-info">
-                                <h4>Улика #4: Скрипт "update_check.py"</h4>
-                                <p>Файл на ПК Алексея Громова.</p>
+                                <h4>Улика #4: Файл «Проверка_обновлений»</h4>
+                                <p>Служебный документ, найденный на рабочем столе Алексея.</p>
                             </div>
                             <button class="btn" onclick="openTaskModal('task4')">Изучить</button>
                         </div>
 
                         <div class="evidence-card">
                             <div class="evidence-info">
-                                <h4>Улика #5: Цифровой след</h4>
-                                <p>Данные из социальных сетей сотрудников.</p>
+                                <h4>Улика #5: Страница в соцсети</h4>
+                                <p>Публичный профиль одного из сотрудников.</p>
                             </div>
                             <button class="btn" onclick="openTaskModal('task5')">Изучить</button>
                         </div>
 
                         <div class="evidence-card">
                             <div class="evidence-info">
-                                <h4>Улика #6: Архив «athena_vault.key»</h4>
-                                <p>Конфиг-файл в корпоративном облаке.</p>
+                                <h4>Улика #6: Архив документов</h4>
+                                <p>Зашифрованный файл на корпоративном диске.</p>
                             </div>
                             <button class="btn" onclick="openTaskModal('task6')">Изучить</button>
                         </div>
@@ -770,21 +760,21 @@
                         <h3 style="font-family: var(--font-title); margin-bottom: 12px; color: var(--accent-gold); font-size: 1.1rem;">Доска расследования</h3>
                         <div class="board-container">
                             <div class="board-column">
-                                <h3>Факты</h3>
+                                <h3>Установленные Факты</h3>
                                 <div id="board-facts">
-                                    <div class="board-item">Утечка произошла в 23:40 через Git-аккаунт.</div>
+                                    <div class="board-item">Файлы скачаны вчера ровно в 23:40.</div>
                                 </div>
                             </div>
                             <div class="board-column">
-                                <h3>Алиби</h3>
+                                <h3>Проверка Алиби</h3>
                                 <div id="board-alibi">
                                     <div class="board-item">Изучите улики для проверки версий.</div>
                                 </div>
                             </div>
                             <div class="board-column">
-                                <h3>Улики</h3>
+                                <h3>Найденные Улики</h3>
                                 <div id="board-evidences">
-                                    <div class="board-item" style="color: #888;">Пока нет улик.</div>
+                                    <div class="board-item" style="color: #888;">Пока нет проверенных улик.</div>
                                 </div>
                             </div>
                         </div>
@@ -796,9 +786,9 @@
                             <h3 style="font-family: var(--font-title); margin-bottom: 10px; color: var(--accent-red); text-align: center;">ИТОГОВЫЙ ОТЧЕТ</h3>
                             
                             <div class="form-group">
-                                <label>1. Чья учетная запись использована?</label>
+                                <label>1. Чья учетная запись была использована мошенниками?</label>
                                 <select class="select-input" id="v-account">
-                                    <option value="">-- Выберите --</option>
+                                    <option value="">-- Выберите сотрудника --</option>
                                     <option value="s1">Алексей Громов</option>
                                     <option value="s2">Елена Миронова</option>
                                     <option value="s3">Дмитрий Ковалев</option>
@@ -807,31 +797,31 @@
                             </div>
 
                             <div class="form-group">
-                                <label>2. Вектор атаки (способ взлома)?</label>
+                                <label>2. Какой способ взлома применил злоумышленник?</label>
                                 <select class="select-input" id="v-vector">
-                                    <option value="">-- Выберите --</option>
-                                    <option value="bruteforce">Перебор пароля (Brute Force)</option>
-                                    <option value="phishing">Фишинг + Социальная инженерия (перехват 2FA)</option>
-                                    <option value="malware">Вредоносный скрипт</option>
-                                    <option value="insider">Слив через флешку</option>
+                                    <option value="">-- Выберите метод --</option>
+                                    <option value="bruteforce">Подбор пароля простым перебором комбинаций</option>
+                                    <option value="phishing">Фишинговое письмо + уловка социальной инженерии (обман со звонком)</option>
+                                    <option value="malware">Установка вредоносной программы-шпиона на компьютер</option>
+                                    <option value="insider">Кража данных через флешку напрямую в офисе</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label>3. Улики-доказательства (мин. 3):</label>
+                                <label>3. Улики-доказательства (выберите ровно 3 ключевых факта):</label>
                                 <div class="checkbox-group">
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev1" class="v-ev"> Поддельный URL в письме</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev2" class="v-ev"> IP из прокси-сети в логах</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev3" class="v-ev"> Передача 2FA по телефону</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev4" class="v-ev"> Безопасный скрипт Громова</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev5" class="v-ev"> Открытый номер в соцсети</label>
-                                    <label class="checkbox-lbl"><input type="checkbox" value="ev6" class="v-ev"> Слабый пароль в облаке</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev1" class="v-ev"> Поддельный адрес сайта в письме Елене</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev2" class="v-ev"> Вход с подозрительного внешнего адреса сети в логах</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev3" class="v-ev"> Передача одноразового кода из SMS по телефону</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev4" class="v-ev"> Служебный файл Алексей был полностью безопасен</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev5" class="v-ev"> Публикация личного рабочего номера в открытом доступе</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev6" class="v-ev"> Использование слишком простого пароля к архиву</label>
                                 </div>
                             </div>
 
                             <div class="feedback-msg" id="verdict-feedback"></div>
 
-                            <button class="btn btn-danger" style="width: 100%; margin-top: 10px;" onclick="submitVerdict()">ОТПРАВИТЬ ОТЧЕТ</button>
+                            <button class="btn btn-danger" style="width: 100%; margin-top: 10px;" onclick="submitVerdict()">ОТПРАВИТЬ ЗАКЛЮЧЕНИЕ</button>
                         </div>
                     </div>
 
@@ -842,37 +832,37 @@
         <!-- SCREEN 3: FINAL RECONSTRUCTION -->
         <div id="screen-final" class="screen">
             <div class="final-screen">
-                <h1>ДЕЛО РАСКРЫТО!</h1>
-                <p style="text-align: center; margin-bottom: 20px; font-weight: 600; font-size: 0.9rem;">Анализ киберинцидента полностью подтвержден.</p>
+                <h1>ДЕЛО УСПЕШНО РАСКРЫТО!</h1>
+                <p style="text-align: center; margin-bottom: 20px; font-weight: 600; font-size: 0.9rem;">Ваш отчет полностью подтвержден службой безопасности.</p>
 
-                <h3 style="font-family: var(--font-title); margin-bottom: 12px; font-size: 1rem;">РЕКОНСТРУКЦИЯ АТАКИ:</h3>
+                <h3 style="font-family: var(--font-title); margin-bottom: 12px; font-size: 1rem;">КАК ПРОИЗОШЕЛ ВЗЛОМ:</h3>
 
                 <div class="timeline-step">
                     <h4>1. Сбор информации (OSINT)</h4>
-                    <p>Злоумышленник узнал личный номер телефона Дмитрия Ковалева из соцсетей (Улика #5).</p>
+                    <p>Злоумышленник нашел личный номер телефона Дмитрия Ковалева на его открытой странице в соцсети (Улика #5).</p>
                 </div>
 
                 <div class="timeline-step">
-                    <h4>2. Фишинговая атака</h4>
-                    <p>Ковалев получил письмо от <code>vector-tech.support-security.com</code> и перешел на поддельный сайт (Улика #1).</p>
+                    <h4>2. Фишинговое письмо</h4>
+                    <p>Дмитрий получил письмо с поддельного адреса <code>support-security.com</code> и перешел по фальшивой ссылке (Улика #1).</p>
                 </div>
 
                 <div class="timeline-step">
-                    <h4>3. Обход 2FA</h4>
-                    <p>Злоумышленник позвонил под видом IT-службы и выманил одноразовый код из SMS (Улика #3).</p>
+                    <h4>3. Звонок мошенника (Социальная инженерия)</h4>
+                    <p>Злоумышленник позвонил Дмитрию, представился системным администратором и убедил назвать одноразовый код из SMS (Улика #3).</p>
                 </div>
 
                 <div class="timeline-step">
-                    <h4>4. Выгрузка кода</h4>
-                    <p>Используя токен Ковалева, атакующий подключился к Git-серверу через прокси (Улика #2) в 23:40 и скачал проект.</p>
+                    <h4>4. Выгрузка секретных данных</h4>
+                    <p>Используя полученные данные Дмитрия, мошенник вошел в систему в 23:40 под видом Дмитрия через анонимную сеть (Улика #2) и скачал проект.</p>
                 </div>
 
                 <div style="background: rgba(45, 138, 84, 0.15); border: 1px solid var(--accent-green); padding: 12px; border-radius: 4px; margin-top: 20px;">
-                    <h4 style="color: var(--accent-green); margin-bottom: 6px; font-size: 0.9rem;">🔑 ПРАВИЛА БЕЗОПАСНОСТИ:</h4>
+                    <h4 style="color: var(--accent-green); margin-bottom: 6px; font-size: 0.9rem;">🔑 ГЛАВНЫЕ ПРАВИЛА БЕЗОПАСНОСТИ:</h4>
                     <ul style="padding-left: 15px; font-size: 0.8rem;">
-                        <li>Никогда не передавайте 2FA коды по телефону.</li>
-                        <li>Проверяйте доменное имя в ссылках.</li>
-                        <li>Следите за личной информацией в соцсетях.</li>
+                        <li>Никогда и никому не сообщайте одноразовые коды из SMS, даже если звонящий представляется сотрудником компании или банка.</li>
+                        <li>Внимательно читайте адрес сайта в адресной строке перед вводом паролей.</li>
+                        <li>Не публикуйте личные и рабочие контакты в открытых профилях социальных сетей.</li>
                     </ul>
                 </div>
 
@@ -890,7 +880,7 @@
             <h3 id="m-s-name" style="font-family: var(--font-title); color: var(--accent-gold); margin-bottom: 4px;"></h3>
             <p id="m-s-role" style="color: #666; font-size: 0.8rem; margin-bottom: 12px;"></p>
             <div style="background: #e8e2d5; padding: 12px; border-radius: 4px; font-size: 0.85rem;">
-                <strong>Показания:</strong>
+                <strong>Показания сотрудника:</strong>
                 <p id="m-s-desc" style="margin-top: 4px;"></p>
             </div>
         </div>
@@ -912,10 +902,10 @@
         };
 
         const suspectsData = {
-            s1: { name: "Алексей Громов", role: "AI-архитектор", desc: "Вчера ушел в 19:00. Ноутбук был дома. На ПК найден скрипт обновления." },
-            s2: { name: "Елена Миронова", role: "Frontend-разработчик", desc: "Получила письмо от IT-отдела о смене пароля." },
-            s3: { name: "Дмитрий Ковалев", role: "DevOps-инженер", desc: "Имеет root-доступ. В 23:30 ему звонили якобы из службы поддержки." },
-            s4: { name: "Ирина Соколова", role: "Менеджер проекта", desc: "Общалась в мессенджере с подрядчиками весь вечер." }
+            s1: { name: "Алексей Громов", role: "Главный архитектор", desc: "Ушел из офиса в 19:00. Ноутбук был заблокирован и находился дома. Утверждает, что никаких файлов никому не передавал." },
+            s2: { name: "Елена Миронова", role: "Веб-разработчик", desc: "Утром получала письмо от технической поддержки с просьбой обновить пароль, но заявляет, что быстро закрыла страницу." },
+            s3: { name: "Дмитрий Ковалев", role: "Администратор сетей", desc: "Имеет полный доступ к файлам. В 23:30 ему позвонили из внутренней службы безопасности и попросили подтвердить работу аккаунта." },
+            s4: { name: "Ирина Соколова", role: "Менеджер проекта", desc: "Весь вечер вела переписку с внешними партнерами в мессенджере, отправляла презентации." }
         };
 
         function goToScreen(screenId) {
@@ -953,78 +943,119 @@
 
             if (taskId === 'task1') {
                 html = `
-                    <div class="task-title">Улика #1: Заголовок письма</div>
-                    <p class="task-desc">Изучите адрес отправителя и ссылку:</p>
-                    <div class="code-snippet">From: Security &lt;admin@vector-tech.support-security.com&gt;
-To: e.mironova@vector-tech.com
-
-Подтвердите доступ:
-http://login.vector-tech.com.auth-check.ru/login</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> Является ли письмо фишинговым?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t1" value="1"> Легитимное</label>
-                        <label class="option-lbl"><input type="radio" name="t1" value="2"> Фишинговое: реальный домен support-security.com, а ссылка ведет на auth-check.ru</label>
+                    <div class="task-title">Улика #1: Входящее письмо</div>
+                    <p class="task-desc">Изучите распечатку электронного письма, которое получила Елена:</p>
+                    <div class="doc-box">
+                        <div class="doc-header">📧 Входящее сообщение</div>
+                        <p><strong>От кого:</strong> Служба Безопасности &lt;admin@vector-tech.support-security.com&gt;</p>
+                        <p><strong>Кому:</strong> e.mironova@vector-tech.com</p>
+                        <p><strong>Тема:</strong> СРОЧНО: Подтвердите вход в систему</p>
+                        <hr style="margin:8px 0;">
+                        <p>Уважаемый сотрудник! На вашем аккаунте замечена подозрительная активность. Чтобы избежать блокировки, срочно перейдите по ссылке:</p>
+                        <p style="color:blue; text-decoration:underline;">http://login.vector-tech.com.auth-check.ru/verify</p>
                     </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask1()">Проверить</button>
+                    <p class="task-desc"><strong>Вопрос:</strong> Является ли это письмо настоящим и безопасным?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t1" value="1"> Настоящее: в тексте и ссылке есть название нашей компании vector-tech.com</label>
+                        <label class="option-lbl"><input type="radio" name="t1" value="2"> Фишинговое: настоящим владельцем сайта в ссылке является сторонний ресурс auth-check.ru, а адрес отправителя — support-security.com</label>
+                        <label class="option-lbl"><input type="radio" name="t1" value="3"> Настоящее: письмо отправлено официальным администратором безопасности</label>
+                        <label class="option-lbl"><input type="radio" name="t1" value="4"> Это обычная спам-рассылка с рекламой, не представляющая угрозы</label>
+                        <label class="option-lbl"><input type="radio" name="t1" value="5"> Безопасное: ссылка защищена и начинается с правильного адреса компании</label>
+                    </div>
+                    <button class="btn" style="width:100%;" onclick="checkTask1()">Сделать вывод</button>
                     <div class="feedback-msg" id="fb-t1"></div>
                 `;
             } else if (taskId === 'task2') {
                 html = `
-                    <div class="task-title">Улика #2: Логи Git</div>
-                    <p class="task-desc">Определите IP-адрес скачивания кода (GIT CLONE):</p>
-                    <div class="code-snippet">23:10:02 user: d_kovalev IP: 192.168.1.45
-23:40:55 user: d_kovalev IP: 185.220.101.5
-23:41:10 [GIT CLONE] repo: athena.git user: d_kovalev</div>
-                    <input type="text" class="text-input" id="inp-t2" placeholder="Введите IP...">
-                    <button class="btn" style="width:100%;" onclick="checkTask2()">Анализировать</button>
+                    <div class="task-title">Улика #2: Журнал входов</div>
+                    <p class="task-desc">Проанализируйте выписку из отчета о подключениях к файловому серверу:</p>
+                    <div class="doc-box">
+                        <div class="doc-header">📊 Отчет о подключениях (Вчера)</div>
+                        <p>• 23:10 — Пользователь d_kovalev | Офисная сеть VPN (Обычный вход)</p>
+                        <p>• 23:25 — Пользователь a_gromov | Офисная сеть VPN (Обычный вход)</p>
+                        <p>• 23:40 — Пользователь d_kovalev | Неизвестная зарубежная сеть / Анонимный прокси</p>
+                        <p>• 23:41 — <strong>[СКАЧИВАНИЕ ФАЙЛОВ]</strong> Архив проекта «Афина» (4.2 ГБ)</p>
+                    </div>
+                    <p class="task-desc"><strong>Вопрос:</strong> Что странного зафиксировано в момент скачивания файлов в 23:40?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t2" value="1"> Алексей Громов зашел в систему в нерабочее время</label>
+                        <label class="option-lbl"><input type="radio" name="t2" value="2"> Под аккаунтом d_kovalev произошел вход из неизвестной зарубежной анонимной сети</label>
+                        <label class="option-lbl"><input type="radio" name="t2" value="3"> Скачивание файлов производилось слишком медленно</label>
+                        <label class="option-lbl"><input type="radio" name="t2" value="4"> Все входы выполнены строго из офиса, нарушений нет</label>
+                        <label class="option-lbl"><input type="radio" name="t2" value="5"> Вход производился без использования логина и пароля</label>
+                    </div>
+                    <button class="btn" style="width:100%;" onclick="checkTask2()">Сделать вывод</button>
                     <div class="feedback-msg" id="fb-t2"></div>
                 `;
             } else if (taskId === 'task3') {
                 html = `
                     <div class="task-title">Улика #3: SMS и Звонок</div>
-                    <div class="code-snippet">[SMS]: Код подтверждения Git: 849-201. Никому не сообщайте!
-[Звонок]: "Дмитрий, это IT-отдел. Назовите код из SMS..."</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> В чем ошибка Дмитрия?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t3" value="1"> Не перезвонил в IT</label>
-                        <label class="option-lbl"><input type="radio" name="t3" value="2"> Сообщил одноразовый код 2FA по телефону</label>
+                    <p class="task-desc">Изучите текстовую распечатку, полученную с телефона Дмитрия:</p>
+                    <div class="doc-box">
+                        <div class="doc-header">📱 Входные данные (23:38)</div>
+                        <p><strong>SMS от Безопасность:</strong> «Ваш одноразовый код для входа: 849-201. Никому не сообщайте этот код!»</p>
+                        <hr style="margin:8px 0;">
+                        <p><strong>Запись разговора (23:39):</strong></p>
+                        <p><i>Звонящий:</i> «Дмитрий, добрый вечер! Это служба поддержки. Мы фиксируем сбой. Нам нужно подтвердить ваш вход, продиктуйте код из SMS...»</p>
+                        <p><i>Дмитрий:</i> «Да, конечно, код 849-201...»</p>
                     </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask3()">Подтвердить</button>
+                    <p class="task-desc"><strong>Вопрос:</strong> Какую грубейшую ошибку допустил Дмитрий?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t3" value="1"> Забыл включить громкую связь при разговоре</label>
+                        <label class="option-lbl"><input type="radio" name="t3" value="2"> Сообщил секретный одноразовый код подтверждения стороннему человеку по телефону</label>
+                        <label class="option-lbl"><input type="radio" name="t3" value="3"> Не записал разговор на диктофон</label>
+                        <label class="option-lbl"><input type="radio" name="t3" value="4"> Ответил на звонок после 22:00</label>
+                        <label class="option-lbl"><input type="radio" name="t3" value="5"> Не удалил SMS сразу после прочтения</label>
+                    </div>
+                    <button class="btn" style="width:100%;" onclick="checkTask3()">Сделать вывод</button>
                     <div class="feedback-msg" id="fb-t3"></div>
                 `;
             } else if (taskId === 'task4') {
                 html = `
-                    <div class="task-title">Улика #4: Файл update_check.py</div>
-                    <div class="code-snippet">import os, time
-print("Checking updates...")
-time.sleep(2)
-print("Updated successfully.")</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> Опасен ли данный скрипт?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t4" value="1"> Да, это вирус</label>
-                        <label class="option-lbl"><input type="radio" name="t4" value="2"> Нет, это безопасная заглушка</label>
+                    <div class="task-title">Улика #4: Файл на ПК Алексея</div>
+                    <p class="task-desc">Изучите описание файла, найденного на рабочем столе Алексея Громова:</p>
+                    <div class="doc-box">
+                        <div class="doc-header">📄 Описание файла: Проверка_обновлений.txt</div>
+                        <p><strong>Назначение:</strong> Обычный текстовый заметник администратора.</p>
+                        <p><strong>Содержимое:</strong> Простая инструкция по плановой перезагрузке компьютеров в офисе по пятницам. Никаких скрытых команд, ссылок или паролей не содержит.</p>
                     </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask4()">Проверить</button>
+                    <p class="task-desc"><strong>Вопрос:</strong> Является ли этот файл вредоносным или опасным?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t4" value="1"> Да, это опасная программа-шпион</label>
+                        <label class="option-lbl"><input type="radio" name="t4" value="2"> Нет, это абсолютно безопасный текстовый документ, Алексей невиновен</label>
+                        <label class="option-lbl"><input type="radio" name="t4" value="3"> Да, этот файл автоматически скачивает файлы из интернета</label>
+                        <label class="option-lbl"><input type="radio" name="t4" value="4"> Да, через него мошенники получили доступ к экрану</label>
+                        <label class="option-lbl"><input type="radio" name="t4" value="5"> Этот файл уничтожает системные логи</label>
+                    </div>
+                    <button class="btn" style="width:100%;" onclick="checkTask4()">Сделать вывод</button>
                     <div class="feedback-msg" id="fb-t4"></div>
                 `;
             } else if (taskId === 'task5') {
                 html = `
-                    <div class="task-title">Улика #5: Соцсети</div>
-                    <div class="code-snippet">Пост Дмитрия: "Мой рабочий номер для связи: +7 (999) 123-45-67. Отвечаю DevOps-отделу 24/7!"</div>
-                    <p class="task-desc"><strong>Вопрос:</strong> Как использовали эти данные?</p>
-                    <div class="options-group">
-                        <label class="option-lbl"><input type="radio" name="t5" value="1"> Узнали его прямой номер и роль для звонка</label>
-                        <label class="option-lbl"><input type="radio" name="t5" value="2"> Взломали страницу</label>
+                    <div class="task-title">Улика #5: Страница в соцсети</div>
+                    <p class="task-desc">Изучите публикацию на публичной странице Дмитрия в социальной сети:</p>
+                    <div class="doc-box">
+                        <div class="doc-header">🌐 Публичный пост Дмитрия</div>
+                        <p>«Всем привет! Теперь я главный администратор сетей компании Vector-Tech! Если будут вопросы по доступам — звоните прямо на мой личный рабочий номер: +7 (999) 123-45-67, я на связи 24/7!»</p>
                     </div>
-                    <button class="btn" style="width:100%;" onclick="checkTask5()">Сопоставить</button>
+                    <p class="task-desc"><strong>Вопрос:</strong> Как злоумышленники использовал эту информацию?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t5" value="1"> Узнали его имя, должность и личный номер для совершения точечного обманного звонка</label>
+                        <label class="option-lbl"><input type="radio" name="t5" value="2"> Взломали его личную страницу и удалили пост</label>
+                        <label class="option-lbl"><input type="radio" name="t5" value="3"> Узнали домашний адрес Дмитрия</label>
+                        <label class="option-lbl"><input type="radio" name="t5" value="4"> Заблокировали его SIM-карту через оператора</label>
+                        <label class="option-lbl"><input type="radio" name="t5" value="5"> Опубликовали от его имени секретные файлы</label>
+                    </div>
+                    <button class="btn" style="width:100%;" onclick="checkTask5()">Сделать вывод</button>
                     <div class="feedback-msg" id="fb-t5"></div>
                 `;
             } else if (taskId === 'task6') {
                 html = `
-                    <div class="task-title">Улика #6: Архив ключей</div>
-                    <p class="task-desc">Введите классический самый простой пароль из 8 цифр (123...):</p>
-                    <input type="text" class="text-input" id="inp-t6" placeholder="Пароль...">
-                    <button class="btn" style="width:100%;" onclick="checkTask6()">Взломать</button>
+                    <div class="task-title">Улика #6: Архив документов</div>
+                    <p class="task-desc">На общем диске найден зашифрованный архив. Эксперты утверждают, что для таких файлов часто используют самые банальные и простые комбинации. Попробуйте угадать самый распространенный 8-значный числовой пароль в мире (цифры по порядку).</p>
+                    <p class="task-desc">Введите предположительный простой пароль:</p>
+                    <input type="text" class="text-input" id="inp-t6" placeholder="Введите комбинацию цифр...">
+                    <button class="btn" style="width:100%;" onclick="checkTask6()">Проверить пароль</button>
                     <div class="feedback-msg" id="fb-t6"></div>
                 `;
             }
@@ -1038,27 +1069,27 @@ print("Updated successfully.")</div>
             const fb = document.getElementById('fb-t1');
             if (selected && selected.value === '2') {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Обнаружен фишинговый домен.';
+                fb.innerText = 'ВЕРНО! Вы точно определили фишинговое письмо и поддельный адрес. Улика добавлена.';
                 fb.style.display = 'block';
-                addEvidence('ev1', 'Фишинговое письмо с поддельным URL');
+                addEvidence('ev1', 'Поддельный адрес сайта в письме Елене');
             } else {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'ОШИБКА. Посмотрите на реальный домен после @.';
+                fb.innerText = 'НЕВЕРНО. Внимательно посмотрите на реальное окончание ссылки (домен) и адрес отправителя!';
                 fb.style.display = 'block';
             }
         }
 
         function checkTask2() {
-            const val = document.getElementById('inp-t2').value.trim();
+            const selected = document.querySelector('input[name="t2"]:checked');
             const fb = document.getElementById('fb-t2');
-            if (val === '185.220.101.5') {
+            if (selected && selected.value === '2') {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Вход выполнен из внешней сети.';
+                fb.innerText = 'ВЕРНО! Вход был выполнен под аккаунтом Дмитрия, но из анонимной сети. Улика добавлена.';
                 fb.style.display = 'block';
-                addEvidence('ev2', 'Лог подключения с внешнего IP 185.220.101.5');
+                addEvidence('ev2', 'Вход с подозрительного внешнего адреса в логах');
             } else {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. Скопируйте IP из строки GIT CLONE.';
+                fb.innerText = 'НЕВЕРНО. Обратите внимание на то, с какого именно адреса сети был выполнен вход в 23:40.';
                 fb.style.display = 'block';
             }
         }
@@ -1068,12 +1099,12 @@ print("Updated successfully.")</div>
             const fb = document.getElementById('fb-t3');
             if (selected && selected.value === '2') {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Коды 2FA нельзя передавать никому.';
+                fb.innerText = 'ВЕРНО! Коды подтверждения из SMS нельзя передавать никому и никогда. Улика добавлена.';
                 fb.style.display = 'block';
-                addEvidence('ev3', 'Передача 2FA кода по телефону');
+                addEvidence('ev3', 'Передача одноразового кода из SMS по телефону');
             } else {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. Что не просили делать в SMS?';
+                fb.innerText = 'НЕВЕРНО. Что прямо запрещено делать в тексте полученного SMS-сообщения?';
                 fb.style.display = 'block';
             }
         }
@@ -1083,12 +1114,12 @@ print("Updated successfully.")</div>
             const fb = document.getElementById('fb-t4');
             if (selected && selected.value === '2') {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Скрипт безопасен. Громов чист.';
+                fb.innerText = 'ВЕРНО! Документ абсолютно безопасен. Алексей невиновен. Улика добавлена.';
                 fb.style.display = 'block';
-                addEvidence('ev4', 'Алексей Громов невиновен');
+                addEvidence('ev4', 'Служебный файл Алексея полностью безопасен');
             } else {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. В коде нет вредоносных функций.';
+                fb.innerText = 'НЕВЕРНО. Внимательно прочтите описание файла: это простой текстовый документ.';
                 fb.style.display = 'block';
             }
         }
@@ -1098,12 +1129,12 @@ print("Updated successfully.")</div>
             const fb = document.getElementById('fb-t5');
             if (selected && selected.value === '1') {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Публикация номера упростила атаку.';
+                fb.innerText = 'ВЕРНО! Открытые личные данные облегчили мошенникам подготовку к звонку. Улика добавлена.';
                 fb.style.display = 'block';
-                addEvidence('ev5', 'Публичный цифровой след Ковалева');
+                addEvidence('ev5', 'Публикация личного рабочего номера в открытом доступе');
             } else {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'НЕВЕРНО. Подумайте, как это помогает при звонке.';
+                fb.innerText = 'НЕВЕРНО. Подумайте, как именно информация из поста помогла мошеннику во время звонка.';
                 fb.style.display = 'block';
             }
         }
@@ -1113,12 +1144,12 @@ print("Updated successfully.")</div>
             const fb = document.getElementById('fb-t6');
             if (val === '12345678') {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ВЕРНО! Пароль "12345678" легко взломан.';
+                fb.innerText = 'ВЕРНО! Пароль «12345678» взломан мгновенно. Это примером наихудшей защиты. Улика добавлена.';
                 fb.style.display = 'block';
-                addEvidence('ev6', 'Слабый пароль архива');
+                addEvidence('ev6', 'Использование слишком простого пароля');
             } else {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'ПОДСКАЗКА: Введите 12345678';
+                fb.innerText = 'ПОДСКАЗКА: Введите 8 цифр по порядку, начиная с 1 (например: 1234...)';
                 fb.style.display = 'block';
             }
         }
@@ -1141,7 +1172,7 @@ print("Updated successfully.")</div>
                     const aItem = document.createElement('div');
                     aItem.className = 'board-item';
                     aItem.style.borderLeftColor = 'var(--accent-red)';
-                    aItem.innerText = '⚠️ Алиби Ковалева опровергнуто: передал 2FA код.';
+                    aItem.innerText = '⚠️ Алиби Ковалева опровергнуто: он лично продиктовал секретный код по телефону.';
                     boardAlibi.appendChild(aItem);
                     document.getElementById('st-s3').className = 'suspect-status status-alibi-fail';
                     document.getElementById('st-s3').innerText = 'АЛИБИ ОПРОВЕРГНУТО';
@@ -1176,16 +1207,16 @@ print("Updated successfully.")</div>
             const selectedEv = Array.from(document.querySelectorAll('.v-ev:checked')).map(cb => cb.value);
             const fb = document.getElementById('verdict-feedback');
 
-            if (!account || !vector || selectedEv.length < 3) {
+            if (!account || !vector || selectedEv.length !== 3) {
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = 'ОШИБКА: Заполните все поля и выберите минимум 3 улики!';
+                fb.innerText = 'ОШИБКА: Заполните все поля и выберите РОВНО 3 ключевые улики-доказательства!';
                 fb.style.display = 'block';
                 return;
             }
 
             if (account === 's3' && vector === 'phishing' && selectedEv.includes('ev1') && selectedEv.includes('ev2') && selectedEv.includes('ev3')) {
                 fb.className = 'feedback-msg feedback-success';
-                fb.innerText = 'ОТЧЕТ ПРИНЯТ! Ваша версия подтверждена.';
+                fb.innerText = 'ОТЧЕТ ПРИНЯТ! Ваше расследование абсолютно точно и подтверждено уликaми.';
                 fb.style.display = 'block';
                 setTimeout(() => {
                     goToScreen('screen-final');
@@ -1193,7 +1224,7 @@ print("Updated successfully.")</div>
             } else {
                 gameState.verdictAttempts++;
                 fb.className = 'feedback-msg feedback-error';
-                fb.innerText = `ЕСТЬ ПРОТИВОРЕЧИЕ. Проверьте логи еще раз. (Попытка №${gameState.verdictAttempts})`;
+                fb.innerText = `В ОТЧЕТЕ ЕСТЬ ОШИБКА. Выбранный сотрудник, метод или комбинация 3 улик не сходятся. Перепроверьте материалы! (Попытка №${gameState.verdictAttempts})`;
                 fb.style.display = 'block';
             }
         }
@@ -1204,7 +1235,7 @@ print("Updated successfully.")</div>
             for (let k in gameState.suspectsChecked) gameState.suspectsChecked[k] = false;
             gameState.verdictAttempts = 0;
 
-            document.getElementById('board-evidences').innerHTML = '<div class="board-item" style="color: #888;">Пока нет улик.</div>';
+            document.getElementById('board-evidences').innerHTML = '<div class="board-item" style="color: #888;">Пока нет проверенных улик.</div>';
             document.getElementById('board-alibi').innerHTML = '<div class="board-item">Изучите улики для проверки версий.</div>';
             
             document.getElementById('st-s3').className = 'suspect-status';
