@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дело №1042: Утечка проекта «Афина»</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #12151e;
+            --bg-desk: #1a1e29;
+            --paper-bg: #f4efe6;
+            --paper-dark: #e8e1d5;
+            --text-dark: #22252a;
+            --text-light: #e0e6ed;
+            --accent-gold: #c9a050;
+            --accent-red: #a83232;
+            --accent-green: #2d8a54;
+            --accent-blue: #2a6f97;
+            --border-color: #343b4d;
+            --shadow: 0 10px 25px rgba(0,0,0,0.5);
+            --font-title: 'Merriweather', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header Navigation */
+        header {
+            background-color: #0c0e14;
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .case-title {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .nav-status {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            background: rgba(201, 160, 80, 0.15);
+            border: 1px solid var(--accent-gold);
+            padding: 5px 12px;
+            border-radius: 4px;
+            color: var(--accent-gold);
+        }
+
+        .btn {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: #e5b860;
+            box-shadow: 0 0 10px rgba(201, 160, 80, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-light);
+        }
+
+        .btn-danger {
+            background: var(--accent-red);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c53c3c;
+        }
+
+        /* Main Workspace */
+        main {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            width: 100%;
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 65px);
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Screen 1: Briefing */
+        .briefing-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--paper-bg);
+            color: var(--text-dark);
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transform: rotate(-0.5deg);
+        }
+
+        .stamp {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            border: 3px dashed var(--accent-red);
+            color: var(--accent-red);
+            font-weight: 700;
+            padding: 5px 15px;
+            transform: rotate(12deg);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .briefing-header {
+            border-bottom: 2px solid var(--text-dark);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .briefing-header h1 {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .briefing-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.03);
+            padding: 10px;
+        }
+
+        .briefing-body p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        /* Screen 2: Board / Hub */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sidebar-nav {
+            background: #181c27;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-item {
+            background: #202534;
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            border-color: var(--accent-gold);
+            background: #282e40;
+        }
+
+        .nav-item .badge {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        .hub-content {
+            background: var(--bg-desk);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 25px;
+            min-height: 600px;
+        }
+
+        /* Suspect Cards & Dossier */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .suspect-card {
+            background: var(--paper-bg);
+            color: var(--text-dark);
+            padding: 15px;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .suspect-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        .suspect-avatar {
+            width: 100%;
+            height: 160px;
+            background: #ccc;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #aaa;
+        }
+
+        .suspect-avatar svg {
+            width: 80px;
+            height: 80px;
+            fill: #666;
+        }
+
+        .suspect-name {
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+
+        .suspect-role {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .suspect-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 3px 6px;
+            background: #ddd;
+            display: inline-block;
+            border-radius: 2px;
+        }
+
+        .status-alibi-ok { background: #d4edda; color: #155724; }
+        .status-alibi-fail { background: #f8d7da; color: #721c24; }
+
+        /* Evidence Items */
+        .evidence-card {
+            background: #202534;
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .evidence-info h4 {
+            color: var(--accent-gold);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .evidence-info p {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Interactive Investigation Task Modals / Containers */
+        .task-box {
+            background: var(--paper-bg);
+            color: var(--text-dark);
+            padding: 25px;
+            border-radius: 4px;
+            margin-top: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .task-title {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #111;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 5px;
+        }
+
+        .task-desc {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .code-snippet {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: var(--font-code);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-lbl {
+            background: #e8e2d5;
+            padding: 10px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 1px solid #ccc;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-lbl:hover {
+            background: #dcd5c5;
+        }
+
+        .option-lbl input {
+            cursor: pointer;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px;
+            font-family: var(--font-code);
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+
+        .feedback-msg {
+            padding: 12px;
+            border-radius: 3px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .feedback-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Hypotheses / Verdict Form */
+        .verdict-form {
+            background: var(--paper-bg);
+            color: var(--text-dark);
+            padding: 30px;
+            border-radius: 3px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 0.95rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background: #fff;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .checkbox-lbl {
+            background: #e8e2d5;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Case Board View */
+        .board-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .board-column {
+            background: #181c27;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+        }
+
+        .board-column h3 {
+            font-family: var(--font-title);
+            color: var(--accent-gold);
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .board-item {
+            background: #222736;
+            padding: 10px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent-gold);
+            font-size: 0.85rem;
+        }
+
+        /* Final Reconstruction Screen */
+        .final-screen {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--paper-bg);
+            color: var(--text-dark);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+        }
+
+        .final-screen h1 {
+            font-family: var(--font-title);
+            color: var(--accent-green);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .timeline-step {
+            border-left: 2px solid var(--accent-blue);
+            padding-left: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-step::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--accent-blue);
+            position: absolute;
+            left: -6px;
+            top: 5px;
+            border-radius: 50%;
+        }
+
+        .timeline-step h4 {
+            font-size: 1rem;
+            color: #111;
+        }
+
+        .timeline-step p {
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--paper-bg);
+            color: var(--text-dark);
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #555;
+        }
+
+        @media (max-width: 900px) {
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+            .board-container {
+                grid-template-columns: 1fr;
+            }
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="case-title">ДЕДУКЦИЯ // ДЕЛО №1042: ПРОЕКТ «АФИНА»</div>
+        <div class="nav-status">
+            <span>ПРОГРЕСС: <strong id="progress-val">0%</strong></span>
+            <span class="status-badge" id="evidence-count">УЛИКИ: 0/7</span>
+            <button class="btn btn-outline" id="btn-restart" onclick="restartGame()">СБРОС</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- SCREEN 1: BRIEFING -->
+        <div id="screen-briefing" class="screen active">
+            <div class="briefing-container">
+                <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+                <div class="briefing-header">
+                    <h1>ПРОТОКОЛ КИБЕРИНЦИДЕНТА №1042</h1>
+                    <p>Отдел Кибербезопасности | Лаборатория Вектор-Тех</p>
+                </div>
+                <div class="briefing-meta">
+                    <div><strong>ОБЪЕКТ:</strong> Утечка исходного кода AI «Афина»</div>
+                    <div><strong>ВРЕМЯ ИНЦИДЕНТА:</strong> Вчера, 23:40</div>
+                    <div><strong>ВЕКТОР:</strong> Несанкционированный доступ к Git-серверу</div>
+                    <div><strong>СТАТУС:</strong> Требуется расследование</div>
+                </div>
+                <div class="briefing-body">
+                    <p>Вчера в 23:40 произошла несанкционированная выгрузка ценных исходных файлов проекта «Афина». Система безопасности зафиксировала вход под учетной записью одного из ключевых сотрудников компании.</p>
+                    <p>Однако, подозреваемые утверждают, что не совершали никаких действий в это время, а двое из них заявляют, что стали жертвами фишинга или технических сбоев. Злоумышленник действовал тонко: был перехвачен одноразовый код двухфакторной аутентификации (2FA) и использованы скомпрометированные данные.</p>
+                    <p>Ваша задача как старшего аналитика по кибербезопасности — изучить логи, проверить показания 4 сотрудников, проанализировать фишинговые письма и подозрительные файлы, восстановить хронологию и установить настоящую причину и виновника утечки.</p>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" style="font-size: 1.1rem; padding: 12px 30px;" onclick="goToScreen('screen-hub')">ПРИСТУПИТЬ К РАССЛЕДОВАНИЮ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: MAIN HUB -->
+        <div id="screen-hub" class="screen">
+            <div class="hub-grid">
+                <div class="sidebar-nav">
+                    <div class="nav-item active" onclick="switchTab('suspects')" id="nav-suspects">
+                        <span>👥 Подозреваемые</span>
+                        <span class="badge">4</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('evidence')" id="nav-evidence">
+                        <span>🔍 Улики и Логи</span>
+                        <span class="badge" id="tab-ev-badge">0/7</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('board')" id="nav-board">
+                        <span>📌 Доска расследования</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('verdict')" id="nav-verdict" style="border-color: var(--accent-gold); margin-top: 15px;">
+                        <span>⚖️ Выдвинуть версию</span>
+                    </div>
+                </div>
+
+                <div class="hub-content">
+                    <!-- TAB 1: SUSPECTS -->
+                    <div id="tab-suspects" class="tab-content">
+                        <h2 style="font-family: var(--font-title); margin-bottom: 20px; color: var(--accent-gold);">Сотрудники с доступом к проекту</h2>
+                        <div class="cards-grid">
+                            <!-- Suspect 1 -->
+                            <div class="suspect-card" onclick="openSuspectModal('s1')">
+                                <div class="suspect-avatar">
+                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                </div>
+                                <div class="suspect-name">Алексей Громов</div>
+                                <div class="suspect-role">Ведущий AI-архитектор</div>
+                                <div class="suspect-status" id="st-s1">Показание: "Был дома, спал"</div>
+                            </div>
+                            <!-- Suspect 2 -->
+                            <div class="suspect-card" onclick="openSuspectModal('s2')">
+                                <div class="suspect-avatar">
+                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                </div>
+                                <div class="suspect-name">Елена Миронова</div>
+                                <div class="suspect-role">Frontend-разработчик</div>
+                                <div class="suspect-status" id="st-s2">Показание: "Получила письмо от IT"</div>
+                            </div>
+                            <!-- Suspect 3 -->
+                            <div class="suspect-card" onclick="openSuspectModal('s3')">
+                                <div class="suspect-avatar">
+                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                </div>
+                                <div class="suspect-name">Дмитрий Ковалев</div>
+                                <div class="suspect-role">DevOps-инженер</div>
+                                <div class="suspect-status" id="st-s3">Показание: "Работал удаленно"</div>
+                            </div>
+                            <!-- Suspect 4 -->
+                            <div class="suspect-card" onclick="openSuspectModal('s4')">
+                                <div class="suspect-avatar">
+                                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                </div>
+                                <div class="suspect-name">Ирина Соколова</div>
+                                <div class="suspect-role">Менеджер проекта</div>
+                                <div class="suspect-status" id="st-s4">Показание: "Отвечала на звонок"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: EVIDENCE -->
+                    <div id="tab-evidence" class="tab-content" style="display: none;">
+                        <h2 style="font-family: var(--font-title); margin-bottom: 20px; color: var(--accent-gold);">Улики и Материалы дела</h2>
+                        
+                        <!-- Evidence List -->
+                        <div class="evidence-card">
+                            <div class="evidence-info">
+                                <h4>Улика #1: Почтовый архив Елены Мироновой</h4>
+                                <p>Письмо с просьбой срочно сменить пароль от "Службы Поддержки".</p>
+                            </div>
+                            <button class="btn" onclick="openTaskModal('task1')">Исследовать</button>
+                        </div>
+
+                        <div class="evidence-card">
+                            <div class="evidence-info">
+                                <h4>Улика #2: Сетевые логи авторизации (Git-сервер)</h4>
+                                <p>Записи подключений во время скачивания репозитория в 23:40.</p>
+                            </div>
+                            <button class="btn" onclick="openTaskModal('task2')">Исследовать</button>
+                        </div>
+
+                        <div class="evidence-card">
+                            <div class="evidence-info">
+                                <h4>Улика #3: Перехват SMS / Push-уведомлений 2FA</h4>
+                                <p>Запросы на получение кодов подтверждения 2FA на телефон Дмитрия Ковалева.</p>
+                            </div>
+                            <button class="btn" onclick="openTaskModal('task3')">Исследовать</button>
+                        </div>
+
+                        <div class="evidence-card">
+                            <div class="evidence-info">
+                                <h4>Улика #4: Подозрительный скрипт "update_check.py"</h4>
+                                <p>Файл, обнаруженный на рабочем компьютере Алексея Громова.</p>
+                            </div>
+                            <button class="btn" onclick="openTaskModal('task4')">Исследовать</button>
+                        </div>
+
+                        <div class="evidence-card">
+                            <div class="evidence-info">
+                                <h4>Улика #5: Скриншот публичного профиля и цифрового следа</h4>
+                                <p>Данные из социальных сетей и мессенджеров сотрудников.</p>
+                            </div>
+                            <button class="btn" onclick="openTaskModal('task5')">Исследовать</button>
+                        </div>
+
+                        <div class="evidence-card">
+                            <div class="evidence-info">
+                                <h4>Улика #6: Зашифрованный конфиг-файл «athena_vault.key»</h4>
+                                <p>Найден в корпоративном облаке с простым паролем.</p>
+                            </div>
+                            <button class="btn" onclick="openTaskModal('task6')">Исследовать</button>
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 3: BOARD -->
+                    <div id="tab-board" class="tab-content" style="display: none;">
+                        <h2 style="font-family: var(--font-title); margin-bottom: 20px; color: var(--accent-gold);">Доска расследования</h2>
+                        <div class="board-container">
+                            <div class="board-column">
+                                <h3>Подтвержденные Факты</h3>
+                                <div id="board-facts">
+                                    <div class="board-item">Утечка произошла 23:40 через Git-аккаунт.</div>
+                                </div>
+                            </div>
+                            <div class="board-column">
+                                <h3>Анализ Алиби и Показаний</h3>
+                                <div id="board-alibi">
+                                    <div class="board-item">Изучите улики для проверки версий.</div>
+                                </div>
+                            </div>
+                            <div class="board-column">
+                                <h3>Найденные Улики</h3>
+                                <div id="board-evidences">
+                                    <div class="board-item" style="color: #888;">Пока нет проверенных улик.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: VERDICT -->
+                    <div id="tab-verdict" class="tab-content" style="display: none;">
+                        <div class="verdict-form">
+                            <h2 style="font-family: var(--font-title); margin-bottom: 15px; color: var(--accent-red); text-align: center;">ОФИЦИАЛЬНОЕ ЗАКЛЮЧЕНИЕ РАССЛЕДОВАНИЯ</h2>
+                            <p style="font-size: 0.9rem; margin-bottom: 25px; text-align: center; color: #555;">Перед отправкой итогового отчета убедитесь, что вы собрали достаточно улик.</p>
+                            
+                            <div class="form-group">
+                                <label>1. Чьи учетные данные были напрямую использованы для скачивания кода?</label>
+                                <select class="select-input" id="v-account">
+                                    <option value="">-- Выберите сотрудника --</option>
+                                    <option value="s1">Алексей Громов</option>
+                                    <option value="s2">Елена Миронова</option>
+                                    <option value="s3">Дмитрий Ковалев</option>
+                                    <option value="s4">Ирина Соколова</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>2. Какой вектор атаки (способ взлома) был использован злоумышленником?</label>
+                                <select class="select-input" id="v-vector">
+                                    <option value="">-- Выберите вектор атаки --</option>
+                                    <option value="bruteforce">Прямой перебор пароля (Brute Force)</option>
+                                    <option value="phishing">Фишинг + Перехват одноразового кода 2FA (AitM / Social Engineering)</option>
+                                    <option value="malware">Вредоносный скрипт на ПК архитектора</option>
+                                    <option value="insider">Прямой слив флешкой из офиса</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>3. Выберите минимум 3 ключевые улики, подтверждающие вашу версию:</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev1" class="v-ev"> Поддельный URL в письме Elena</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev2" class="v-ev"> IP-адрес из прокси-сети в логах</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev3" class="v-ev"> Сообщения социальной инженерии в мессенджере</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev4" class="v-ev"> Легитимный файл обновления</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev5" class="v-ev"> Публикация личного номера в соцсети</label>
+                                    <label class="checkbox-lbl"><input type="checkbox" value="ev6" class="v-ev"> Ненадежный пароль в облачном хранилище</label>
+                                </div>
+                            </div>
+
+                            <div class="feedback-msg" id="verdict-feedback"></div>
+
+                            <button class="btn btn-danger" style="width: 100%; padding: 12px; margin-top: 15px; font-size: 1rem;" onclick="submitVerdict()">ОТПРАВИТЬ ОТЧЕТ РУКОВОДСТВУ</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: FINAL RECONSTRUCTION -->
+        <div id="screen-final" class="screen">
+            <div class="final-screen">
+                <h1>ДЕЛО РАСКРЫТО!</h1>
+                <p style="text-align: center; margin-bottom: 30px; font-weight: 600; font-size: 1.1rem;">Анализ киберинцидента полностью подтвержден. Злоумышленник выявлен.</p>
+
+                <h3 style="font-family: var(--font-title); margin-bottom: 15px;">РЕКОНСТРУКЦИЯ АТАКИ:</h3>
+
+                <div class="timeline-step">
+                    <h4>Этап 1: Сбор информации (OSINT)</h4>
+                    <p>Злоумышленник найдя открытые данные в соцсетях (Улика #5), узнал личный номер телефона Дмитрия Ковалева и его роль DevOps-инженера.</p>
+                </div>
+
+                <div class="timeline-step">
+                    <h4>Этап 2: Фишинговая атака (Spear Phishing)</h4>
+                    <p>Дмитрий получил поддельное письмо с домена <code>vector-tech.support-security.com</code> (Улика #1). Перейдя по ссылке, он попал на фишинговый сайт, имитирующий вход в корпоративную систему.</p>
+                </div>
+
+                <div class="timeline-step">
+                    <h4>Этап 3: Обход 2FA через социальную инженерию</h4>
+                    <p>После ввода пароля злоумышленник запросил код 2FA. Злоумышленник позвонил Дмитрию под видом сотрудника IT-отдела и методом социальной инженерии выманил одноразовый код из SMS (Улика #3).</p>
+                </div>
+
+                <div class="timeline-step">
+                    <h4>Этап 4: Несанкционированный доступ и кража</h4>
+                    <p>Используя сессионный токен Дмитрия, атакующий подключился к Git-серверу через внешнюю прокси-сеть (Улика #2) в 23:40 и скачал архив проекта «Афина».</p>
+                </div>
+
+                <div style="background: rgba(45, 138, 84, 0.1); border: 1px solid var(--accent-green); padding: 20px; border-radius: 4px; margin-top: 30px;">
+                    <h4 style="color: var(--accent-green); margin-bottom: 10px;">🔑 КЛЮЧЕВЫЕ УРОКИ КИБЕРБЕЗОПАСНОСТИ:</h4>
+                    <ul style="padding-left: 20px; font-size: 0.95rem;">
+                        <li><strong>Не передавайте 2FA коды:</strong> Ни один настоящий сотрудник IT-службы или банка никогда не запрашивает одноразовые коды подтверждения.</li>
+                        <li><strong>Внимательно проверяйте URL-адреса:</strong> Поддельные фишинговые домены часто используют лишние поддомены (напр. <code>support-security.com</code> вместо <code>vector-tech.com</code>).</li>
+                        <li><strong>Соблюдайте цифровой след:</strong> Публикация рабочих номеров и структуры компании облегчает работу мошенникам.</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="restartGame()">ПРОЙТИ ЕЩЕ РАЗ</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODALS -->
+
+    <!-- Suspect Modal -->
+    <div class="modal-overlay" id="modal-suspect">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal-suspect')">&times;</button>
+            <h2 id="m-s-name" style="font-family: var(--font-title); color: var(--accent-gold); margin-bottom: 5px;"></h2>
+            <p id="m-s-role" style="color: #666; font-size: 0.9rem; margin-bottom: 15px;"></p>
+            <div style="background: #e8e2d5; padding: 15px; border-radius: 3px; margin-bottom: 15px;">
+                <strong>Показания:</strong>
+                <p id="m-s-desc" style="font-size: 0.95rem; margin-top: 5px;"></p>
+            </div>
+            <div id="m-s-extra"></div>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal-overlay" id="modal-task">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal-task')">&times;</button>
+            <div id="task-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // GAME STATE OBJECT
+        const gameState = {
+            progress: 0,
+            evidencesFound: {
+                ev1: false,
+                ev2: false,
+                ev3: false,
+                ev4: false,
+                ev5: false,
+                ev6: false
+            },
+            suspectsChecked: {
+                s1: false,
+                s2: false,
+                s3: false,
+                s4: false
+            },
+            verdictAttempts: 0
+        };
+
+        const suspectsData = {
+            s1: {
+                name: "Алексей Громов",
+                role: "Ведущий AI-архитектор",
+                desc: "Вчера ушел из офиса в 19:00. Утверждает, что ноутбук находился дома в заблокированном состоянии. На его машине найден некий скрипт обновления.",
+                status: "Проверяется"
+            },
+            s2: {
+                name: "Елена Миронова",
+                role: "Frontend-разработчик",
+                desc: "Заявляет, что утром получала странное письмо от IT-отдела о необходимости сменить пароль, но не помнит, переходила ли по ссылке.",
+                status: "Проверяется"
+            },
+            s3: {
+                name: "Дмитрий Ковалев",
+                role: "DevOps-инженер",
+                desc: "Имеет полный root-доступ к серверу. Утверждает, что вечером в 23:30 ему звонили из службы поддержки компании для верификации учетной записи.",
+                status: "Главный подозреваемый"
+            },
+            s4: {
+                name: "Ирина Соколова",
+                role: "Менеджер проекта",
+                desc: "Утверждает, что весь вечер обсуждала проект в мессенджере с подрядчиками и отправляла им инструкции.",
+                status: "Проверяется"
+            }
+        };
+
+        // NAVIGATION LOGIC
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            document.getElementById('nav-' + tabName).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // SUSPECT MODAL
+        function openSuspectModal(id) {
+            const data = suspectsData[id];
+            document.getElementById('m-s-name').innerText = data.name;
+            document.getElementById('m-s-role').innerText = data.role;
+            document.getElementById('m-s-desc').innerText = data.desc;
+            
+            gameState.suspectsChecked[id] = true;
+            updateProgress();
+
+            document.getElementById('modal-suspect').classList.add('active');
+        }
+
+        // TASKS & EVIDENCE INVESTIGATION
+        function openTaskModal(taskId) {
+            const container = document.getElementById('task-container');
+            let html = '';
+
+            if (taskId === 'task1') {
+                html = `
+                    <div class="task-title">Улика #1: Анализ Почтового Заголовка</div>
+                    <p class="task-desc">Елена Миронова получила следующее письмо. Внимательно изучите адрес отправителя и ссылку:</p>
+                    <div class="code-snippet">
+From: Security Support &lt;admin@vector-tech.support-security.com&gt;
+To: e.mironova@vector-tech.com
+Subject: СРОЧНО: Подтвердите доступ к аккаунту
+
+Уважаемый сотрудник, зафиксирована подозрительная активность. 
+Перейдите по ссылке для верификации 2FA:
+http://login.vector-tech.com.auth-check.ru/login
+                    </div>
+                    <p><strong>Вопрос:</strong> Является ли данное письмо легитимным или фишинговым, и почему?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t1" value="1"> Легитимное, так как в письме упоминается бренд vector-tech.com</label>
+                        <label class="option-lbl"><input type="radio" name="t1" value="2"> Фишинговое: реальный домен отправителя — support-security.com, а ссылка ведет на auth-check.ru</label>
+                        <label class="option-lbl"><input type="radio" name="t1" value="3"> Легитимное, так как письмо отправлено от имени Security Support</label>
+                    </div>
+                    <button class="btn" onclick="checkTask1()">Проверить уликy</button>
+                    <div class="feedback-msg" id="fb-t1"></div>
+                `;
+            } else if (taskId === 'task2') {
+                html = `
+                    <div class="task-title">Улика #2: Анализ сетевых логов</div>
+                    <p class="task-desc">Определите, из какой подсети произошел несанкционированный вход в 23:40 под аккаунтом d_kovalev:</p>
+                    <div class="code-snippet">
+23:10:02 [AUTH OK] user: d_kovalev IP: 192.168.1.45 (Внутренняя сеть VPN)
+23:25:14 [AUTH OK] user: a_gromov IP: 192.168.1.12 (Внутренняя сеть VPN)
+23:40:55 [AUTH OK] user: d_kovalev IP: 185.220.101.5 (TOR Proxy / Внешний IP)
+23:41:10 [GIT CLONE] repo: athena-core.git user: d_kovalev Bytes: 4.2GB
+                    </div>
+                    <p><strong>Задание:</strong> Введите IP-адрес, с которого была выполнена несанкционированная выгрузка кода (GIT CLONE):</p>
+                    <input type="text" class="text-input" id="inp-t2" placeholder="Например: 127.0.0.1">
+                    <button class="btn" onclick="checkTask2()">Анализировать логи</button>
+                    <div class="feedback-msg" id="fb-t2"></div>
+                `;
+            } else if (taskId === 'task3') {
+                html = `
+                    <div class="task-title">Улика #3: Перехват 2FA и Социальная Инженерия</div>
+                    <p class="task-desc">В 23:38 на телефон Дмитрия Ковалева пришло сообщение с кодом 2FA. Через минуту ему поступил звонок через мессенджер.</p>
+                    <div class="code-snippet">
+[SMS] Ваш код подтверждения входа в Git-Server: 849-201. Никому не сообщайте этот код!
+[Запись звонка]: "Дмитрий, это IT-отдел. Мы проводим проверку 2FA. Назовите код из SMS, чтобы подтвердить сессию..."
+                    </div>
+                    <p><strong>Вопрос:</strong> Какую главную ошибку допустил Дмитрий Ковалев?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t3" value="1"> Не перезвонил в IT-отдел для проверки</label>
+                        <label class="option-lbl"><input type="radio" name="t3" value="2"> Передал одноразовый код 2FA третьим лицам по телефону</label>
+                        <label class="option-lbl"><input type="radio" name="t3" value="3"> Не заблокировал SMS-сообщения</label>
+                    </div>
+                    <button class="btn" onclick="checkTask3()">Подтвердить вывод</button>
+                    <div class="feedback-msg" id="fb-t3"></div>
+                `;
+            } else if (taskId === 'task4') {
+                html = `
+                    <div class="task-title">Улика #4: Экспертиза файла update_check.py</div>
+                    <p class="task-desc">На ПК Алексея Громова был найден файл со следующим содержимым:</p>
+                    <div class="code-snippet">
+import os
+import time
+
+# Официальный скрипт проверки системных обновлений
+print("Checking for system updates...")
+time.sleep(2)
+print("System updated successfully. No threats found.")
+                    </div>
+                    <p><strong>Вопрос:</strong> Содержит ли данный файл вредоносный код или шпионские функции?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t4" value="1"> Да, это крадущий пароли троян</label>
+                        <label class="option-lbl"><input type="radio" name="t4" value="2"> Нет, это безопасный скрипт-заглушка, вредоносных функций нет</label>
+                    </div>
+                    <button class="btn" onclick="checkTask4()">Проверить код</button>
+                    <div class="feedback-msg" id="fb-t4"></div>
+                `;
+            } else if (taskId === 'task5') {
+                html = `
+                    <div class="task-title">Улика #5: Цифровой след в социальных сетях</div>
+                    <p class="task-desc">На открытой странице Дмитрия Ковалева в социальной сети обнаружен следующий пост:</p>
+                    <div class="code-snippet">
+"Ура! Наконец-то настроил рабочий доступ из дома! 
+Мой рабочий номер для связи: +7 (999) 123-45-67. 
+Отвечаю на звонки DevOps-отдела круглосуточно!"
+                    </div>
+                    <p><strong>Вопрос:</strong> Как злоумышленники использовали эту информацию?</p>
+                    <div class="options-group">
+                        <label class="option-lbl"><input type="radio" name="t5" value="1"> Узнали его прямой номер и роль в компании для точечного звонка (Spear Vishing)</label>
+                        <label class="option-lbl"><input type="radio" name="t5" value="2"> Взломали его аккаунт в соцсети</label>
+                    </div>
+                    <button class="btn" onclick="checkTask5()">Сопоставить данные</button>
+                    <div class="feedback-msg" id="fb-t5"></div>
+                `;
+            } else if (taskId === 'task6') {
+                html = `
+                    <div class="task-title">Улика #6: Зашифрованный архив ключей</div>
+                    <p class="task-desc">В общем облачном диске обнаружен зашифрованный zip-архив с именем <code>athena_keys.zip</code>. Попробуйте подобрать пароль по словарю самых частых слабых паролей.</p>
+                    <p>Введите предположительный слабый пароль (8 символов, классический вариант):</p>
+                    <input type="text" class="text-input" id="inp-t6" placeholder="Введите пароль...">
+                    <button class="btn" onclick="checkTask6()">Взломать архив</button>
+                    <div class="feedback-msg" id="fb-t6"></div>
+                `;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('modal-task').classList.add('active');
+        }
+
+        // TASK CHECKERS
+        function checkTask1() {
+            const selected = document.querySelector('input[name="t1"]:checked');
+            const fb = document.getElementById('fb-t1');
+            if (selected && selected.value === '2') {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ВЕРНО! Вы обнаружили фишинговый домен третьего уровня. Улика добавлена.';
+                fb.style.display = 'block';
+                addEvidence('ev1', 'Фишинговое письмо с поддельным URL-адресом');
+            } else {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'ОШИБКА. Внимательно посмотрите на домен после знака @ и структуру ссылки!';
+                fb.style.display = 'block';
+            }
+        }
+
+        function checkTask2() {
+            const val = document.getElementById('inp-t2').value.trim();
+            const fb = document.getElementById('fb-t2');
+            if (val === '185.220.101.5') {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ВЕРНО! Вход был выполнен из анонимной сети с аккаунта d_kovalev. Улика добавлена.';
+                fb.style.display = 'block';
+                addEvidence('ev2', 'Лог подключения к Git с внешнего IP 185.220.101.5');
+            } else {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'НЕВЕРНО. Скопируйте точный IP-адрес из строки с действием [GIT CLONE].';
+                fb.style.display = 'block';
+            }
+        }
+
+        function checkTask3() {
+            const selected = document.querySelector('input[name="t3"]:checked');
+            const fb = document.getElementById('fb-t3');
+            if (selected && selected.value === '2') {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ВЕРНО! Главное правило 2FA — никогда и никому не сообщать одноразовые коды. Улика добавлена.';
+                fb.style.display = 'block';
+                addEvidence('ev3', 'Передача 2FA кода мошенникам по телефону');
+            } else {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'НЕВЕРНО. Что именно просили не делать в SMS?';
+                fb.style.display = 'block';
+            }
+        }
+
+        function checkTask4() {
+            const selected = document.querySelector('input[name="t4"]:checked');
+            const fb = document.getElementById('fb-t4');
+            if (selected && selected.value === '2') {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ВЕРНО! Скрипт абсолютно безопасен. Алексей Громов невиновен.';
+                fb.style.display = 'block';
+                addEvidence('ev4', 'Алексей Громов чист: скрипт безопасен');
+            } else {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'НЕВЕРНО. В коде нет сетевых запросов или вредоносных команд.';
+                fb.style.display = 'block';
+            }
+        }
+
+        function checkTask5() {
+            const selected = document.querySelector('input[name="t5"]:checked');
+            const fb = document.getElementById('fb-t5');
+            if (selected && selected.value === '1') {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ВЕРНО! Публикация личных рабочих данных упростила атаку методом целевого вишинга. Улика добавлена.';
+                fb.style.display = 'block';
+                addEvidence('ev5', 'Публичный цифровой след Дмитрия Ковалева');
+            } else {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'НЕВЕРНО. Подумайте, как эти данные помогают при звонке.';
+                fb.style.display = 'block';
+            }
+        }
+
+        function checkTask6() {
+            const val = document.getElementById('inp-t6').value.trim().toLowerCase();
+            const fb = document.getElementById('fb-t6');
+            if (val === '12345678' || val === 'password') {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ВЕРНО! Пароль "12345678" взломан за 0.1 секунды. Улика добавлена.';
+                fb.style.display = 'block';
+                addEvidence('ev6', 'Слабный пароль в архивном конфиге');
+            } else {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'ПОДСКАЗКА: Попробуйте самый простой числовой пароль из 8 цифр подряд (123...)';
+                fb.style.display = 'block';
+            }
+        }
+
+        // ADD EVIDENCE TO GAME STATE & BOARD
+        function addEvidence(id, text) {
+            if (!gameState.evidencesFound[id]) {
+                gameState.evidencesFound[id] = true;
+                
+                // Add to Board
+                const boardEv = document.getElementById('board-evidences');
+                if (boardEv.children[0] && boardEv.children[0].style.color) {
+                    boardEv.innerHTML = '';
+                }
+                const item = document.createElement('div');
+                item.className = 'board-item';
+                item.innerText = '🔍 ' + text;
+                boardEv.appendChild(item);
+
+                // Update Alibi Board if specific
+                if (id === 'ev3') {
+                    const boardAlibi = document.getElementById('board-alibi');
+                    const aItem = document.createElement('div');
+                    aItem.className = 'board-item';
+                    aItem.style.borderLeftColor = 'var(--accent-red)';
+                    aItem.innerText = '⚠️ Алиби Ковалева опровергнуто: он лично скомпрометировал 2FA код.';
+                    boardAlibi.appendChild(aItem);
+                    document.getElementById('st-s3').className = 'suspect-status status-alibi-fail';
+                    document.getElementById('st-s3').innerText = 'АЛИБИ ОПРОВЕРГНУТО';
+                }
+
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            let foundCount = 0;
+            for (let k in gameState.evidencesFound) {
+                if (gameState.evidencesFound[k]) foundCount++;
+            }
+            
+            document.getElementById('evidence-count').innerText = `УЛИКИ: ${foundCount}/6`;
+            document.getElementById('tab-ev-badge').innerText = `${foundCount}/6`;
+
+            let suspectCount = 0;
+            for (let k in gameState.suspectsChecked) {
+                if (gameState.suspectsChecked[k]) suspectCount++;
+            }
+
+            const totalScore = (foundCount * 12) + (suspectCount * 7);
+            gameState.progress = Math.min(100, totalScore);
+            document.getElementById('progress-val').innerText = `${gameState.progress}%`;
+        }
+
+        // SUBMIT FINAL HYPOTHESIS
+        function submitVerdict() {
+            const account = document.getElementById('v-account').value;
+            const vector = document.getElementById('v-vector').value;
+            const selectedEv = Array.from(document.querySelectorAll('.v-ev:checked')).map(cb => cb.value);
+            const fb = document.getElementById('verdict-feedback');
+
+            if (!account || !vector || selectedEv.length < 3) {
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = 'ОШИБКА: Заполните все поля и выберите минимум 3 доказательства из списка!';
+                fb.style.display = 'block';
+                return;
+            }
+
+            // Check correctness
+            // Correct: account === 's3' (Dmitry Kovalev), vector === 'phishing'
+            // Evidence required: ev1, ev2, ev3, ev5
+            if (account === 's3' && vector === 'phishing' && selectedEv.includes('ev1') && selectedEv.includes('ev2') && selectedEv.includes('ev3')) {
+                fb.className = 'feedback-msg feedback-success';
+                fb.innerText = 'ОТЧЕТ ПРИНЯТ! Ваша версия логически безупречна и подтверждена фактами.';
+                fb.style.display = 'block';
+                setTimeout(() => {
+                    goToScreen('screen-final');
+                }, 1500);
+            } else {
+                gameState.verdictAttempts++;
+                fb.className = 'feedback-msg feedback-error';
+                fb.innerText = `В ВАШЕМ ОТЧЕТЕ ЕСТЬ ПРОТИВОРЕЧИЕ. Выбранные улики не полностью подтверждают указанный вектор атаки или сотрудника. Проверьте логи еще раз! (Попытка №${gameState.verdictAttempts})`;
+                fb.style.display = 'block';
+            }
+        }
+
+        // RESTART GAME
+        function restartGame() {
+            gameState.progress = 0;
+            for (let k in gameState.evidencesFound) gameState.evidencesFound[k] = false;
+            for (let k in gameState.suspectsChecked) gameState.suspectsChecked[k] = false;
+            gameState.verdictAttempts = 0;
+
+            document.getElementById('board-evidences').innerHTML = '<div class="board-item" style="color: #888;">Пока нет проверенных улик.</div>';
+            document.getElementById('board-alibi').innerHTML = '<div class="board-item">Изучите улики для проверки версий.</div>';
+            
+            document.getElementById('st-s3').className = 'suspect-status';
+            document.getElementById('st-s3').innerText = 'Показание: "Работал удаленно"';
+
+            updateProgress();
+            goToScreen('screen-briefing');
+        }
+    </script>
+</body>
+</html>
