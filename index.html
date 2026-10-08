@@ -182,7 +182,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #fff;
             flex-shrink: 0;
@@ -285,15 +285,6 @@
         .feedback-ok { background: #d4edda; color: #155724; }
         .feedback-err { background: #f8d7da; color: #721c24; }
 
-        .input-text {
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
         .board-box {
             background: var(--bg-card);
             padding: 12px;
@@ -323,17 +314,6 @@
             border-radius: 6px;
             margin-bottom: 12px;
             font-size: 0.85rem;
-        }
-
-        .checkbox-lbl {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            background: #e9ecef;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 6px;
         }
 
         @media (min-width: 600px) {
@@ -373,9 +353,9 @@
             <!-- Вкладка: Подозреваемые -->
             <div id="tab-suspects" class="tab-content">
                 <div class="suspect-card" onclick="showSuspect('1')">
-                    <div class="avatar">А</div>
+                    <div class="avatar" style="background: #e63946;">Ал</div>
                     <div class="suspect-info">
-                        <h3>Артём</h3>
+                        <h3>Алихан</h3>
                         <p>Любит простые пароли. Утверждает, что не знает пароль Максима.</p>
                     </div>
                 </div>
@@ -387,16 +367,16 @@
                     </div>
                 </div>
                 <div class="suspect-card" onclick="showSuspect('3')">
-                    <div class="avatar" style="background: #e63946;">Д</div>
+                    <div class="avatar" style="background: #ee964b;">М</div>
                     <div class="suspect-info">
-                        <h3>Денис</h3>
-                        <p>Часто оставляет свои данные в открытом доступе.</p>
+                        <h3>Максим</h3>
+                        <p>Главный редактор. Утверждает, что его аккаунт был взломан.</p>
                     </div>
                 </div>
                 <div class="suspect-card" onclick="showSuspect('4')">
-                    <div class="avatar" style="background: #457b9d;">С</div>
+                    <div class="avatar" style="background: #457b9d;">Д</div>
                     <div class="suspect-info">
-                        <h3>София</h3>
+                        <h3>Динара</h3>
                         <p>Сидела в школьном Wi-Fi и искала бесплатные стикеры.</p>
                     </div>
                 </div>
@@ -416,12 +396,12 @@
                 </div>
                 <div class="task-card">
                     <h4>Улика #3: Пост в социальной сети</h4>
-                    <p>Денис выложил фото своего пропускного билета в школу.</p>
+                    <p>Алихан выложил фото своего пропускного билета в школу.</p>
                     <button class="btn" onclick="openTask('3')">Проверить фото</button>
                 </div>
                 <div class="task-card">
                     <h4>Улика #4: Опрос про Wi-Fi</h4>
-                    <p>София подключилась к неизвестной сети без пароля.</p>
+                    <p>Динара подключилась к неизвестной сети без пароля.</p>
                     <button class="btn" onclick="openTask('4')">Проверить сеть</button>
                 </div>
             </div>
@@ -444,9 +424,9 @@
                     
                     <select class="select-box" id="v-who">
                         <option value="">-- Кто виновен? --</option>
-                        <option value="artem">Артём</option>
-                        <option value="denis">Денис</option>
-                        <option value="sofia">София</option>
+                        <option value="alikhan">Алихан</option>
+                        <option value="vika">Вика</option>
+                        <option value="dinara">Динара</option>
                     </select>
 
                     <p style="font-size: 0.85rem; margin-bottom: 5px;">Какая ошибка привела к взлому?</p>
@@ -467,8 +447,8 @@
         <div id="screen-final" class="screen">
             <div class="briefing-box" style="text-align: center;">
                 <h1 style="color: var(--accent-green);">🎉 ДЕЛО РАСКРЫТО!</h1>
-                <p><strong>Виновник: Артём!</strong></p>
-                <p>Артём просто подобрал пароль Максима, потому что тот использовал самый простой и популярный пароль <code>123456</code>!</p>
+                <p><strong>Виновник: Алихан!</strong></p>
+                <p>Алихан просто подобрал пароль Максима, потому что тот использовал самый простой и популярный пароль <code>123456</code>!</p>
                 
                 <div style="background: #e9ecef; padding: 10px; border-radius: 8px; text-align: left; margin: 15px 0; font-size: 0.85rem;">
                     <strong>💡 Правила безопасности:</strong>
@@ -501,6 +481,7 @@
         function goToScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            window.scrollTo(0, 0);
         }
 
         function switchTab(name) {
@@ -518,13 +499,13 @@
         function showSuspect(id) {
             const content = document.getElementById('modal-content');
             if (id === '1') {
-                content.innerHTML = `<h3>Артём</h3><p style="margin-top:10px;">Любит играть в игры и не хочет запоминать сложные пароли. Везде использует пароль "123456".</p>`;
+                content.innerHTML = `<h3>Алихан</h3><p style="margin-top:10px;">Любит играть в игры и не хочет запоминать сложные пароли. Везде использует комбинацию "123456".</p>`;
             } else if (id === '2') {
                 content.innerHTML = `<h3>Вика</h3><p style="margin-top:10px;">Очень осторожна в сети. Всегда проверяет ссылки перед тем, как нажать.</p>`;
             } else if (id === '3') {
-                content.innerHTML = `<h3>Денис</h3><p style="margin-top:10px;">Опубликовал в сторис фото своего школьного дневника и логина.</p>`;
+                content.innerHTML = `<h3>Максим</h3><p style="margin-top:10px;">Главный редактор блога. Был уверен, что его никто не взломает.</p>`;
             } else if (id === '4') {
-                content.innerHTML = `<h3>София</h3><p style="margin-top:10px;">Любит бесплатный интернет и подлючается к любым открытым сетям.</p>`;
+                content.innerHTML = `<h3>Динара</h3><p style="margin-top:10px;">Любит бесплатный интернет и подключается к любым открытым сетям.</p>`;
             }
             document.getElementById('task-modal').classList.add('active');
         }
@@ -551,15 +532,14 @@
                     <div class="feedback" id="fb"></div>
                 `;
             } else if (id === '3') {
-                html = `
+                content.innerHTML = `
                     <h3>Улика #3: Личные данные</h3>
-                    <p style="font-size:0.85rem; margin:10px 0;">Почему нельзя выкладывать в сеть фото документов и билетов?</p>
+                    <p style="font-size:0.85rem; margin:10px 0;">Почему нельзя выкладывать в сеть фото документов и пропусков?</p>
                     <div class="quiz-option"><input type="radio" name="p3" value="1"> Мошенники могут использовать личные данные</div>
                     <div class="quiz-option"><input type="radio" name="p3" value="2"> Это просто некрасиво</div>
                     <button class="btn" onclick="checkTask3()">Ответить</button>
                     <div class="feedback" id="fb"></div>
                 `;
-                content.innerHTML = html;
             } else if (id === '4') {
                 content.innerHTML = `
                     <h3>Улика #4: Открытый Wi-Fi</h3>
@@ -610,7 +590,7 @@
                 fb.className = 'feedback feedback-ok';
                 fb.innerText = 'Верно! Нельзя публиковать фото документов.';
                 fb.style.display = 'block';
-                addEvidence('e3', 'Денис публикует лишние данные, но пароли не знал.');
+                addEvidence('e3', 'Алихан публикует лишние данные, но пароли не знал.');
             } else {
                 fb.className = 'feedback feedback-err';
                 fb.innerText = 'Неверно! Подумай об опасности мошенничества.';
@@ -625,7 +605,7 @@
                 fb.className = 'feedback feedback-ok';
                 fb.innerText = 'Верно! Открытые сети небезопасны.';
                 fb.style.display = 'block';
-                addEvidence('e4', 'София рискует в Wi-Fi, но блог не взламывала.');
+                addEvidence('e4', 'Динара рискует в Wi-Fi, но блог не взламывала.');
             } else {
                 fb.className = 'feedback feedback-err';
                 fb.innerText = 'Неверно! Перехватить данные в открытой сети очень легко.';
@@ -653,7 +633,7 @@
             const reason = document.getElementById('v-reason').value;
             const fb = document.getElementById('verdict-fb');
 
-            if (who === 'artem' && reason === 'easy') {
+            if (who === 'alikhan' && reason === 'easy') {
                 goToScreen('screen-final');
             } else {
                 fb.className = 'feedback feedback-err';
